@@ -1,4 +1,4 @@
-import { ButtonLink } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 

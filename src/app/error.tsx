@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import { Button, ButtonLink } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import { site } from "@/lib/site";

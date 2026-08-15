@@ -1,4 +1,4 @@
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 
 /**
  * The gradient hero band, with the two soft radial washes from the original

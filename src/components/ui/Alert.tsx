@@ -20,9 +20,9 @@ export default function Alert({ variant, children }: AlertProps) {
     <div
       role={variant === "error" ? "alert" : "status"}
       aria-live={variant === "error" ? "assertive" : "polite"}
-      className={`flex items-start gap-3 rounded-xl border px-4.5 py-3.5 text-[0.95rem] ${STYLES[variant]}`}
+      className={`flex items-start gap-1.5 rounded-xl border px-4.5 py-3.5 text-[0.95rem] ${STYLES[variant]}`}
     >
-      <i className={`mt-0.75 ${ICONS[variant]}`} aria-hidden="true" />
+      <i className={`mt-1 ${ICONS[variant]}`} aria-hidden="true" />
       <span>{children}</span>
     </div>
   );

@@ -8,6 +8,7 @@ import FloatingButtons from "@/components/layout/FloatingButtons";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import { site } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -49,7 +50,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${poppins.variable}`}
+      className={cn(inter.variable, poppins.variable, "font-sans")}
     >
       <body>
         <Navbar />

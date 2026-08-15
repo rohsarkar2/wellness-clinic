@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import FormCard, { FormRow, SUBMIT_BUTTON } from "@/components/appointment/FormCard";
 import TimeSlotSelector from "@/components/appointment/TimeSlotSelector";
 import Alert from "@/components/ui/Alert";
-import { InputField, SelectField, TextareaField } from "@/components/ui/Field";
+import { DateField, InputField, SelectField, TextareaField } from "@/components/ui/Field";
 import { Spinner } from "@/components/ui/Loading";
 import { createAppointment, getAvailability } from "@/lib/api/appointments";
 import { toErrorMessage } from "@/lib/api/client";
@@ -144,27 +144,24 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
             label="Doctor"
             icon="fa-solid fa-user-doctor"
             error={errors.doctorId}
+            placeholder="Select a doctor"
             value={values.doctorId}
-            onChange={(event) => setField("doctorId", event.target.value)}
-          >
-            <option value="">Select a doctor</option>
-            {doctors.map((doctor) => (
-              <option key={doctor.id} value={doctor.id}>
-                {doctor.name} — {doctor.speciality}
-              </option>
-            ))}
-          </SelectField>
+            onValueChange={(value) => setField("doctorId", value)}
+            options={doctors.map((doctor) => ({
+              value: doctor.id,
+              label: `${doctor.name} — ${doctor.speciality}`,
+            }))}
+          />
 
-          <InputField
+          <DateField
             id="date"
-            type="date"
             label="Appointment Date"
             icon="fa-solid fa-calendar-day"
             error={errors.date}
             min={today()}
             max={addDays(MAX_ADVANCE_DAYS)}
             value={values.date}
-            onChange={(event) => setField("date", event.target.value)}
+            onChange={(value) => setField("date", value)}
           />
         </FormRow>
 

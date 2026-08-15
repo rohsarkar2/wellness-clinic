@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import Hero, { HeroContent } from "@/components/layout/Hero";
 import MapSection from "@/components/layout/MapSection";
-import { ButtonLink } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import Section from "@/components/ui/Section";

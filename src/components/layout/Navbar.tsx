@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { ButtonLink } from "@/components/ui/Button";
-import { cn } from "@/lib/cn";
+import { ButtonLink } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { navLinks, site } from "@/lib/site";
 
 export default function Navbar() {
@@ -106,7 +106,6 @@ export default function Navbar() {
                   )}
                 >
                   {link.label}
-                  {/* Sliding underline, desktop only. */}
                   <span
                     className={cn(
                       "absolute -bottom-2.5 left-0 hidden h-0.75 rounded-[10px] bg-primary transition-[width] duration-350 lg:block",
@@ -119,10 +118,6 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* Same CTA as the header, surfaced inside the drawer. The wrapper
-              does the centring and aligns the button with the links' gutter —
-              `mx-auto` on the button itself would be ignored, because its base
-              `inline-flex` keeps it inline-level. */}
           <div className="px-[6%] py-4.5 lg:hidden">
             <ButtonLink
               href="/appointment"

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 
 /** The frosted white card that wraps every form on the site. */
 export default function FormCard({

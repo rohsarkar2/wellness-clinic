@@ -2,7 +2,7 @@
 
 import Alert from "@/components/ui/Alert";
 import { LoadingBlock } from "@/components/ui/Loading";
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 import type { TimeSlot } from "@/lib/types";
 
 interface TimeSlotSelectorProps {
@@ -29,10 +29,13 @@ export default function TimeSlotSelector({
   if (loading) return <LoadingBlock label="Checking available slots…" />;
   if (error) return <Alert variant="error">{error}</Alert>;
   if (placeholder) return <Alert variant="info">{placeholder}</Alert>;
-  if (notice && slots.length === 0) return <Alert variant="info">{notice}</Alert>;
+  if (notice && slots.length === 0)
+    return <Alert variant="info">{notice}</Alert>;
 
   if (slots.length === 0) {
-    return <Alert variant="info">No slots are published for this date yet.</Alert>;
+    return (
+      <Alert variant="info">No slots are published for this date yet.</Alert>
+    );
   }
 
   const hasAvailable = slots.some((slot) => slot.available);
@@ -42,7 +45,9 @@ export default function TimeSlotSelector({
       {notice ? <Alert variant="info">{notice}</Alert> : null}
 
       {!hasAvailable ? (
-        <Alert variant="info">Every slot on this date is booked. Please choose another day.</Alert>
+        <Alert variant="info">
+          Every slot on this date is booked. Please choose another day.
+        </Alert>
       ) : null}
 
       <div
@@ -58,7 +63,11 @@ export default function TimeSlotSelector({
               type="button"
               disabled={!slot.available}
               aria-pressed={selected}
-              aria-label={slot.available ? `Select ${slot.label}` : `${slot.label} — already booked`}
+              aria-label={
+                slot.available
+                  ? `Select ${slot.label}`
+                  : `${slot.label} — already booked`
+              }
               onClick={() => onChange(slot.time)}
               className={cn(
                 "cursor-pointer rounded-xl border-2 px-1 py-2.75 text-[0.88rem] font-semibold transition duration-250 sm:px-2 sm:py-3 sm:text-[0.95rem]",

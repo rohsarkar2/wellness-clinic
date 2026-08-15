@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ButtonLink } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import { ApiError } from "@/lib/api/client";

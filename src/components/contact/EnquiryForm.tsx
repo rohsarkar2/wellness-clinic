@@ -108,20 +108,17 @@ export default function EnquiryForm({
 
           <SelectField
             id="enquiry-department"
-            name="department"
             label="Department"
             icon="fa-solid fa-stethoscope"
             error={errors.department}
+            placeholder="Select Department"
             value={values.department}
-            onChange={(event) => setField("department", event.target.value)}
-          >
-            <option value="">Select Department</option>
-            {departments.map((department) => (
-              <option key={department} value={department}>
-                {department}
-              </option>
-            ))}
-          </SelectField>
+            onValueChange={(value) => setField("department", value)}
+            options={departments.map((department) => ({
+              value: department,
+              label: department,
+            }))}
+          />
         </FormRow>
 
         <TextareaField

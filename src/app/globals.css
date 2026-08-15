@@ -1,14 +1,81 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* No `.dark` class is ever set — the clinic design is light-only — so binding
+   the variant to a class keeps `dark:` utilities in shadcn's components inert. */
+@custom-variant dark (&:is(.dark *));
 
 /* ==========================================================================
-   Design tokens — the palette, type and breakpoints of the original site,
-   exposed as Tailwind utilities (bg-primary, font-display, shadow-card, …).
+   shadcn semantic tokens, mapped to the clinic palette.
+
+   These drive every shadcn component (Button, Input, Select, Calendar, …) and
+   also feed the `@theme inline` block below, so `bg-primary` resolves to the
+   clinic blue rather than shadcn's default near-black.
+   ========================================================================== */
+
+:root {
+  --radius: 0.75rem;
+
+  --background: #ffffff;
+  --foreground: #1f2d3d;
+
+  --card: #ffffff;
+  --card-foreground: #1f2d3d;
+  --popover: #ffffff;
+  --popover-foreground: #1f2d3d;
+
+  --primary: #0a6ebd;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f5faff;
+  --secondary-foreground: #0a6ebd;
+
+  --muted: #f5faff;
+  --muted-foreground: #9aa5b1;
+
+  --accent: #eef7ff;
+  --accent-foreground: #0a6ebd;
+
+  --destructive: #d13b4a;
+
+  --border: #e4edf8;
+  --input: #e4edf8;
+  --ring: #0a6ebd;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+/* ==========================================================================
+   Clinic-specific tokens layered on top
    ========================================================================== */
 
 @theme {
-  --color-primary: #0a6ebd;
   --color-primary-dark: #085ea4;
-  --color-accent: #00b8a9;
   --color-pink: #e84f7d;
   /* `ink` is heading text, `body` is paragraph text. */
   --color-ink: #1f2d3d;
@@ -49,6 +116,10 @@
    ========================================================================== */
 
 @layer base {
+  * {
+    @apply border-border;
+  }
+
   html {
     scroll-behavior: smooth;
     /* `clip`, not `hidden` — `hidden` would make this a scroll container,
@@ -56,10 +127,12 @@
     overflow-x: clip;
   }
 
+  /* Body copy keeps its own softer grey; `--foreground` (ink) is reserved for
+     headings and for the text inside shadcn controls. */
   body {
     font-family: var(--font-sans);
     color: var(--color-body);
-    background: #fff;
+    background: var(--color-background);
     line-height: 1.7;
   }
 
@@ -91,43 +164,8 @@
   }
 }
 
-/* ==========================================================================
-   The two patterns with no single-purpose utility equivalent
-   ========================================================================== */
-
 /* Page gutter: capped at 1200px, 92% below that. */
 @utility container-page {
   width: min(1200px, 92%);
   margin-inline: auto;
-}
-
-/* Form controls repeat across three forms; one utility keeps them identical. */
-@utility field-control {
-  width: 100%;
-  padding: 15px;
-  border: 2px solid var(--color-line);
-  border-radius: 12px;
-  font-size: 1rem;
-  font-family: inherit;
-  color: var(--color-ink);
-  background: #fff;
-  outline: none;
-  transition: border-color 0.25s;
-
-  &::placeholder {
-    color: #9aa5b1;
-  }
-
-  &:focus {
-    border-color: var(--color-primary);
-  }
-
-  &[aria-invalid="true"] {
-    border-color: #e05260;
-  }
-
-  /* Anything under 16px makes iOS zoom the page in on focus. */
-  @media (width < 769px) {
-    font-size: 16px;
-  }
 }

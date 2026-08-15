@@ -4,7 +4,7 @@ import Image from "next/image";
 import DoctorGrid from "@/components/doctors/DoctorGrid";
 import Hero, { HeroContent } from "@/components/layout/Hero";
 import Alert from "@/components/ui/Alert";
-import { ButtonLink } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import { EmptyState } from "@/components/ui/Loading";
