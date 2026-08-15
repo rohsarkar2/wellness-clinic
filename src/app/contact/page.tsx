@@ -7,6 +7,7 @@ import MapSection from "@/components/layout/MapSection";
 import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
+import Reveal, { RevealGroup } from "@/components/ui/Reveal";
 import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { OG_IMAGES, pageMetadata } from "@/lib/metadata";
@@ -78,13 +79,13 @@ export default function ContactPage() {
         <Container className="relative z-2">
           <SectionTitle eyebrow="Get In Touch" title="Contact Information" />
 
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <RevealGroup className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {details.map((detail) => (
               <FeatureCard key={detail.title} {...detail} />
             ))}
-          </div>
+          </RevealGroup>
 
-          <div className="mt-10 text-center">
+          <Reveal className="mt-10 text-center">
             <ButtonLink
               href={whatsappHref}
               variant="secondary"
@@ -94,19 +95,19 @@ export default function ContactPage() {
               <i className="fa-brands fa-whatsapp" aria-hidden="true" />
               Message us on WhatsApp
             </ButtonLink>
-          </div>
+          </Reveal>
 
-          <div id="enquiry" className="my-11 md:my-15">
+          <Reveal id="enquiry" className="my-11 md:my-15">
             <EnquiryForm
               wide
               title="Send an Enquiry"
               subtitle="Fill in your details and we'll contact you shortly. To pick a specific time slot, use the booking page instead."
             />
-          </div>
+          </Reveal>
 
-          <div className="text-center">
+          <Reveal className="text-center">
             <ButtonLink href="/appointment">Book a Time Slot</ButtonLink>
-          </div>
+          </Reveal>
         </Container>
       </Section>
 

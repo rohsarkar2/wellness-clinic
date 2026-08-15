@@ -5,6 +5,7 @@ import AppointmentForm from "@/components/appointment/AppointmentForm";
 import Alert from "@/components/ui/Alert";
 import Container from "@/components/ui/Container";
 import { LoadingBlock } from "@/components/ui/Loading";
+import Reveal from "@/components/ui/Reveal";
 import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { toErrorMessage } from "@/lib/api/client";
@@ -40,7 +41,8 @@ export default async function AppointmentPage() {
           description={`Pick a doctor and a time that works for you. Clinic hours are ${site.hours.toLowerCase()}.`}
         />
 
-        <div className="mx-auto max-w-195">
+        {/* The form is the whole page, so it animates on mount. */}
+        <Reveal className="mx-auto max-w-195" delay={0.1} onMount>
           {error ? (
             <Alert variant="error">
               {error} You can also call us on {site.phonePrimary} to book over
@@ -54,7 +56,7 @@ export default async function AppointmentPage() {
               <AppointmentForm doctors={doctors} />
             </Suspense>
           )}
-        </div>
+        </Reveal>
       </Container>
     </Section>
   );

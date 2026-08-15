@@ -8,6 +8,7 @@ import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import { EmptyState } from "@/components/ui/Loading";
+import { RevealGroup } from "@/components/ui/Reveal";
 import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { toErrorMessage } from "@/lib/api/client";
@@ -120,11 +121,11 @@ export default async function DoctorsPage() {
             eyebrow="Why Our Team"
             title="Dedicated To Better Healthcare"
           />
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <RevealGroup className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {TEAM_VALUES.map((item) => (
               <FeatureCard key={item.title} {...item} />
             ))}
-          </div>
+          </RevealGroup>
         </Container>
       </Section>
     </>

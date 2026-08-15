@@ -1,4 +1,5 @@
 import DoctorCard from "@/components/doctors/DoctorCard";
+import Reveal from "@/components/ui/Reveal";
 import type { Doctor } from "@/lib/types";
 
 /**
@@ -15,7 +16,10 @@ export default function DoctorGrid({
   showBooking?: boolean;
 }) {
   return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-5">
+    // Revealed as one block rather than card by card: the cards are subgrids of
+    // this grid, so they can't be individually wrapped without losing the
+    // row alignment.
+    <Reveal className="grid gap-6 md:grid-cols-2 xl:grid-cols-5">
       {doctors.map((doctor, index) => (
         <DoctorCard
           key={doctor.id}
@@ -24,6 +28,6 @@ export default function DoctorGrid({
           priority={index < 3}
         />
       ))}
-    </div>
+    </Reveal>
   );
 }

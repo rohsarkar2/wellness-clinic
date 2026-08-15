@@ -6,6 +6,7 @@ import MapSection from "@/components/layout/MapSection";
 import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
+import { RevealGroup } from "@/components/ui/Reveal";
 import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { OG_IMAGES, pageMetadata } from "@/lib/metadata";
@@ -105,18 +106,18 @@ export default function AboutPage() {
             title="Who We Are"
             description="A neighbourhood clinic built around one idea — that good healthcare should be close by, affordable and genuinely caring."
           />
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <RevealGroup className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {HIGHLIGHTS.map((item) => (
               <FeatureCard key={item.title} {...item} />
             ))}
-          </div>
+          </RevealGroup>
         </Container>
       </Section>
 
       <Section className="bg-mist">
         <Container>
           <SectionTitle eyebrow="Mission & Vision" title="Our Core Values" />
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <RevealGroup className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {VALUES.map((value) => (
               <article
                 key={value.title}
@@ -128,7 +129,7 @@ export default function AboutPage() {
                 <p>{value.description}</p>
               </article>
             ))}
-          </div>
+          </RevealGroup>
         </Container>
       </Section>
 

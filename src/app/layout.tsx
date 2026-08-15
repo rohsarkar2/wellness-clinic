@@ -97,6 +97,13 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={cn(inter.variable, poppins.variable, "font-sans")}
     >
+      <head>
+        {/* Scroll reveals start hidden and are animated in by JS. Without it,
+            show them. */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
       <body>
         <Navbar />
         <main>{children}</main>
