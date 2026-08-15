@@ -21,14 +21,36 @@ interface OgImage {
   height: number;
 }
 
-/** The artwork in /public/images is all 3:2; doctor portraits are 4:5. */
+/**
+ * Social previews come from /public/og, not /public/images: the source artwork
+ * is 1.5–2.2 MB and 3:2, and WhatsApp drops any preview image much over 300 KB.
+ * `scripts/generate-og-images.mjs` builds these 1200×630 derivatives.
+ */
+const OG_SIZE = { width: 1200, height: 630 } as const;
+
 export const OG_IMAGES = {
-  home: { url: "/images/heroimg.png", width: 1536, height: 1024 },
-  clinic: { url: "/images/clinic.png", width: 1536, height: 1024 },
-  services: { url: "/images/services.png", width: 1536, height: 1024 },
-  doctors: { url: "/images/collage.png", width: 1536, height: 1024 },
-  about: { url: "/images/abouts.png", width: 1536, height: 1024 },
+  home: { url: "/og/heroimg.jpg", ...OG_SIZE },
+  clinic: { url: "/og/clinic.jpg", ...OG_SIZE },
+  services: { url: "/og/services.jpg", ...OG_SIZE },
+  doctors: { url: "/og/collage.jpg", ...OG_SIZE },
+  about: { url: "/og/abouts.jpg", ...OG_SIZE },
 } as const;
+
+/**
+ * The social crop of a doctor's portrait. Falls back to the team image for a
+ * doctor whose photo isn't one of the local files — a remote URL from the
+ * backend, say — since no derivative would exist for it.
+ */
+export function doctorOgImage(portrait: string) {
+  if (!portrait.startsWith("/images/")) return OG_IMAGES.doctors;
+
+  return {
+    url: portrait
+      .replace("/images/", "/og/")
+      .replace(/\.(png|jpe?g)$/i, ".jpg"),
+    ...OG_SIZE,
+  };
+}
 
 export interface PageMetadataOptions {
   /** Page title without the clinic name — the layout template prepends it. */

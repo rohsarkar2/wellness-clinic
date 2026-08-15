@@ -7,6 +7,7 @@ import ServiceCard from "@/components/services/ServiceCard";
 import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
+import Reveal, { RevealGroup } from "@/components/ui/Reveal";
 import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { getDoctors } from "@/lib/api/doctors";
@@ -101,7 +102,10 @@ export default async function HomePage() {
               </ButtonLink>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-3">
+            {/* On mount rather than on scroll — this sits above the fold. The
+                headline and CTAs above are left alone so the largest paint
+                isn't waiting on an animation. */}
+            <RevealGroup className="grid gap-6 md:grid-cols-3" onMount>
               {HERO_FEATURES.map((feature) => (
                 <div
                   key={feature.title}
@@ -115,7 +119,7 @@ export default async function HomePage() {
                   <p className="text-[0.9rem]">{feature.description}</p>
                 </div>
               ))}
-            </div>
+            </RevealGroup>
           </div>
 
           {/* Decorative only — hidden on phones where it is just noise. */}
@@ -129,26 +133,32 @@ export default async function HomePage() {
             className="pointer-events-none absolute bottom-0 hidden h-[88%] w-auto -translate-x-1/2 object-contain opacity-[0.18] mask-[linear-gradient(to_left,transparent_0%,rgb(0_0_0/0.8)_18%,black_35%)] md:left-[52%] md:block lg:-right-10 lg:left-auto lg:h-[110%] lg:translate-x-0 lg:opacity-35 lg:mask-[linear-gradient(to_left,black_65%,rgb(0_0_0/0.6)_80%,transparent_100%)]"
           />
 
-          <EnquiryForm subtitle="Fill in your details and we'll contact you shortly." />
+          {/* `w-full` because the reveal wrapper, not the card, is now the
+              grid item HeroContent lays out. */}
+          <Reveal className="w-full" delay={0.15} onMount>
+            <EnquiryForm subtitle="Fill in your details and we'll contact you shortly." />
+          </Reveal>
         </HeroContent>
 
-        <Container className="relative z-3 mt-10 grid gap-px overflow-hidden rounded-[22px] bg-[#edf2f7] shadow-card sm:grid-cols-2 lg:mt-12.5 xl:grid-cols-4">
-          {STATS.map((stat) => (
-            <div
-              key={stat.label}
-              className="bg-white px-3 py-5.5 text-center lg:p-7"
-            >
-              <h3 className="text-[2rem] text-primary">
-                {stat.value}
-                {stat.suffix ? (
-                  <span className="text-[0.6em]">{stat.suffix}</span>
-                ) : null}
-              </h3>
+        <Reveal>
+          <Container className="relative z-3 mt-10 grid gap-px overflow-hidden rounded-[22px] bg-[#edf2f7] shadow-card sm:grid-cols-2 lg:mt-12.5 xl:grid-cols-4">
+            {STATS.map((stat) => (
+              <div
+                key={stat.label}
+                className="bg-white px-3 py-5.5 text-center lg:p-7"
+              >
+                <h3 className="text-[2rem] text-primary">
+                  {stat.value}
+                  {stat.suffix ? (
+                    <span className="text-[0.6em]">{stat.suffix}</span>
+                  ) : null}
+                </h3>
 
-              <span className="text-[#666]">{stat.label}</span>
-            </div>
-          ))}
-        </Container>
+                <span className="text-[#666]">{stat.label}</span>
+              </div>
+            ))}
+          </Container>
+        </Reveal>
       </Hero>
 
       <Section>
@@ -159,27 +169,27 @@ export default async function HomePage() {
             description="Our experienced specialists are committed to providing compassionate, personalized and evidence-based healthcare."
           />
           <DoctorGrid doctors={doctors} />
-          <div className="mt-10 text-center">
+          <Reveal className="mt-10 text-center">
             <ButtonLink href="/doctors" variant="secondary">
               View All Doctors
             </ButtonLink>
-          </div>
+          </Reveal>
         </Container>
       </Section>
 
       <Section className="bg-mist">
         <Container>
           <SectionTitle eyebrow="WHAT WE OFFER" title="Our Services" />
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <RevealGroup className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {services.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
-          </div>
-          <div className="mt-10 text-center">
+          </RevealGroup>
+          <Reveal className="mt-10 text-center">
             <ButtonLink href="/services" variant="secondary">
               Explore All Services
             </ButtonLink>
-          </div>
+          </Reveal>
         </Container>
       </Section>
 
@@ -189,29 +199,31 @@ export default async function HomePage() {
             eyebrow="WHY CHOOSE US"
             title="Why Choose Wellness Health Point?"
           />
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <RevealGroup className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {WHY_US.map((item) => (
               <FeatureCard key={item.title} {...item} />
             ))}
-          </div>
+          </RevealGroup>
         </Container>
       </Section>
 
       <Section className="bg-linear-[135deg,#0a6ebd,#0c4f84] text-white">
-        <Container className="flex flex-col items-center gap-6.5 text-center lg:flex-row lg:justify-between lg:gap-7.5 lg:text-left">
-          <div>
-            <h2 className="font-display text-[1.65rem] font-bold sm:text-[1.9rem] md:text-[2.3rem]">
-              Your Health Is Our Commitment
-            </h2>
-            <p>
-              Book your appointment today and take the first step toward better
-              health.
-            </p>
-          </div>
-          <ButtonLink href="/appointment" variant="onDark">
-            Book Appointment
-          </ButtonLink>
-        </Container>
+        <Reveal>
+          <Container className="flex flex-col items-center gap-6.5 text-center lg:flex-row lg:justify-between lg:gap-7.5 lg:text-left">
+            <div>
+              <h2 className="font-display text-[1.65rem] font-bold sm:text-[1.9rem] md:text-[2.3rem]">
+                Your Health Is Our Commitment
+              </h2>
+              <p>
+                Book your appointment today and take the first step toward
+                better health.
+              </p>
+            </div>
+            <ButtonLink href="/appointment" variant="onDark">
+              Book Appointment
+            </ButtonLink>
+          </Container>
+        </Reveal>
       </Section>
     </>
   );

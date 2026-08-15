@@ -7,6 +7,7 @@ import Alert from "@/components/ui/Alert";
 import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
+import Reveal, { RevealGroup } from "@/components/ui/Reveal";
 import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { toErrorMessage } from "@/lib/api/client";
@@ -108,11 +109,11 @@ export default async function ServicesPage() {
           {error ? (
             <Alert variant="error">{error}</Alert>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <RevealGroup className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {services.map((service) => (
                 <ServiceCard key={service.id} service={service} />
               ))}
-            </div>
+            </RevealGroup>
           )}
         </Container>
       </Section>
@@ -120,26 +121,28 @@ export default async function ServicesPage() {
       <Section className="bg-mist">
         <Container>
           <SectionTitle eyebrow="Our Process" title="Getting Care Is Simple" />
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <RevealGroup className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {PROCESS.map((step) => (
               <FeatureCard key={step.title} {...step} />
             ))}
-          </div>
+          </RevealGroup>
         </Container>
       </Section>
 
       <Section className="bg-linear-[135deg,#0a6ebd,#0c4f84] text-white">
-        <Container className="flex flex-col items-center gap-6.5 text-center lg:flex-row lg:justify-between lg:text-left">
-          <div>
-            <h2 className="font-display text-[1.65rem] font-bold sm:text-[1.9rem] md:text-[2.3rem]">
-              Need Expert Medical Care?
-            </h2>
-            <p>Book an appointment today with our specialists.</p>
-          </div>
-          <ButtonLink href="/appointment" variant="onDark">
-            Book Appointment
-          </ButtonLink>
-        </Container>
+        <Reveal>
+          <Container className="flex flex-col items-center gap-6.5 text-center lg:flex-row lg:justify-between lg:text-left">
+            <div>
+              <h2 className="font-display text-[1.65rem] font-bold sm:text-[1.9rem] md:text-[2.3rem]">
+                Need Expert Medical Care?
+              </h2>
+              <p>Book an appointment today with our specialists.</p>
+            </div>
+            <ButtonLink href="/appointment" variant="onDark">
+              Book Appointment
+            </ButtonLink>
+          </Container>
+        </Reveal>
       </Section>
     </>
   );

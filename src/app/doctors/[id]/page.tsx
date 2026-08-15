@@ -5,10 +5,11 @@ import { notFound } from "next/navigation";
 
 import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
+import Reveal from "@/components/ui/Reveal";
 import Section from "@/components/ui/Section";
 import { ApiError } from "@/lib/api/client";
 import { getDoctorById, getDoctors } from "@/lib/api/doctors";
-import { pageMetadata } from "@/lib/metadata";
+import { doctorOgImage, pageMetadata } from "@/lib/metadata";
 import { site } from "@/lib/site";
 import type { Doctor } from "@/lib/types";
 
@@ -42,12 +43,9 @@ export async function generateMetadata(
       title: doctor.name,
       description: `${doctor.name} — ${doctor.speciality} at ${site.name}. ${doctor.experienceYears} years of experience. ${doctor.qualifications.join(", ")}. Book a consultation online.`,
       path: `/doctors/${doctor.id}`,
-      // Portraits are 4:5, unlike the 3:2 artwork used elsewhere.
       image: {
-        url: doctor.image,
+        ...doctorOgImage(doctor.image),
         alt: `${doctor.name}, ${doctor.speciality}`,
-        width: 1080,
-        height: 1350,
       },
       type: "profile",
     });
@@ -105,7 +103,10 @@ export default async function DoctorDetailPage(
         </nav> */}
 
         <div className="grid items-start gap-7.5 lg:grid-cols-[320px_1fr] lg:gap-12.5">
-          <aside className="mx-auto max-w-80 rounded-card bg-white p-6 text-center shadow-card lg:mx-0 lg:max-w-none">
+          <Reveal
+            className="mx-auto max-w-80 rounded-card bg-white p-6 text-center shadow-card lg:mx-0 lg:max-w-none"
+            onMount
+          >
             <Image
               src={doctor.image}
               alt={doctor.name}
@@ -122,9 +123,9 @@ export default async function DoctorDetailPage(
               <i className="fa-solid fa-calendar-check" aria-hidden="true" />
               Book Appointment
             </ButtonLink>
-          </aside>
+          </Reveal>
 
-          <div>
+          <Reveal delay={0.1} onMount>
             <h1 className="mb-1.5 font-display text-[1.65rem] font-bold text-ink sm:text-[1.9rem] lg:text-[2.4rem]">
               {doctor.name}
             </h1>
@@ -194,7 +195,7 @@ export default async function DoctorDetailPage(
                 All Doctors
               </ButtonLink> */}
             </div>
-          </div>
+          </Reveal>
         </div>
       </Container>
     </Section>
