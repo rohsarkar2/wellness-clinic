@@ -21,15 +21,10 @@ interface OgImage {
   height: number;
 }
 
-/**
- * Social previews come from /public/og, not /public/images: the source artwork
- * is 1.5–2.2 MB and 3:2, and WhatsApp drops any preview image much over 300 KB.
- * `scripts/generate-og-images.mjs` builds these 1200×630 derivatives.
- */
 const OG_SIZE = { width: 1200, height: 630 } as const;
 
 export const OG_IMAGES = {
-  home: { url: "/og/heroimg.jpg", ...OG_SIZE },
+  home: { url: "/og/clinic.jpg", ...OG_SIZE },
   clinic: { url: "/og/clinic.jpg", ...OG_SIZE },
   services: { url: "/og/services.jpg", ...OG_SIZE },
   doctors: { url: "/og/collage.jpg", ...OG_SIZE },
