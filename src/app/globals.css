@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Design tokens — the palette, type and breakpoints of the original site,
+   exposed as Tailwind utilities (bg-primary, font-display, shadow-card, …).
+   ========================================================================== */
+
+@theme {
+  --color-primary: #0a6ebd;
+  --color-primary-dark: #085ea4;
+  --color-accent: #00b8a9;
+  --color-pink: #e84f7d;
+  /* `ink` is heading text, `body` is paragraph text. */
+  --color-ink: #1f2d3d;
+  --color-body: #566573;
+  --color-mist: #f5faff;
+  --color-line: #e4edf8;
+  --color-navy: #10253f;
+
+  --font-sans: var(--font-inter), Inter, sans-serif;
+  --font-display: var(--font-poppins), Poppins, sans-serif;
+
+  --shadow-card: 0 10px 30px rgb(0 0 0 / 0.08);
+  --shadow-panel: 0 20px 50px rgb(0 0 0 / 0.12);
+  --radius-card: 16px;
+
+  /* Min-width mirrors of the original max-width breakpoints, so the layout
+     switches at exactly the same widths. lg=1101px is where the desktop nav
+     stops fitting — iPad Pro 12.9" is 1024px wide in portrait. */
+  --breakpoint-sm: 481px;
+  --breakpoint-md: 769px;
+  --breakpoint-lg: 1101px;
+  --breakpoint-xl: 1201px;
+
+  --animate-shimmer: shimmer 1.3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* `clip`, not `hidden` — `hidden` would make this a scroll container,
+       which breaks the sticky header and cuts the page short on iPadOS. */
+    overflow-x: clip;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-body);
+    background: #fff;
+    line-height: 1.7;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :where(a, button, input, select, textarea):focus-visible {
+    outline: 3px solid rgb(10 110 189 / 0.45);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   The two patterns with no single-purpose utility equivalent
+   ========================================================================== */
+
+/* Page gutter: capped at 1200px, 92% below that. */
+@utility container-page {
+  width: min(1200px, 92%);
+  margin-inline: auto;
+}
+
+/* Form controls repeat across three forms; one utility keeps them identical. */
+@utility field-control {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid var(--color-line);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--color-ink);
+  background: #fff;
+  outline: none;
+  transition: border-color 0.25s;
+
+  &::placeholder {
+    color: #9aa5b1;
+  }
+
+  &:focus {
+    border-color: var(--color-primary);
+  }
+
+  &[aria-invalid="true"] {
+    border-color: #e05260;
+  }
+
+  /* Anything under 16px makes iOS zoom the page in on focus. */
+  @media (width < 769px) {
+    font-size: 16px;
+  }
+}
