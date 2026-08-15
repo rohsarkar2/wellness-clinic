@@ -9,7 +9,6 @@ import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
-import StarRating from "@/components/ui/StarRating";
 import { getDoctors } from "@/lib/api/doctors";
 import { getServices } from "@/lib/api/services";
 

@@ -18,7 +18,7 @@ export const doctors: Doctor[] = [
     description:
       "Dr. Sayan Bose is a consultant paediatrician with over a decade of experience caring for newborns, infants and adolescents. He focuses on growth monitoring, immunisation schedules, nutritional guidance and the early detection of developmental concerns, and is known for putting anxious parents at ease.",
     languages: ["English", "Hindi", "Bengali"],
-    availableDays: ["Monday", "Tuesday", "Thursday", "Friday", "Saturday"],
+    availableDays: ["Monday", "Thursday", "Saturday"],
     consultationFee: 600,
   },
   {
@@ -33,7 +33,7 @@ export const doctors: Doctor[] = [
     description:
       "Dr. Sayantani Bhanja provides comprehensive women's healthcare across every life stage — from adolescent health and family planning to antenatal care, high-risk pregnancy management and menopause support. She believes in shared decision making and evidence-based, respectful care.",
     languages: ["English", "Hindi", "Bengali"],
-    availableDays: ["Monday", "Wednesday", "Thursday", "Saturday"],
+    availableDays: ["Tuesday", "Wednesday", "Friday", "Saturday"],
     consultationFee: 700,
   },
   {
@@ -48,7 +48,7 @@ export const doctors: Doctor[] = [
     description:
       "Dr. Riya Das treats the full range of ear, nose and throat conditions, including chronic sinusitis, hearing loss, tonsillitis, vertigo and voice disorders. She combines careful diagnostic work-ups with conservative management wherever surgery can be avoided.",
     languages: ["English", "Hindi", "Bengali"],
-    availableDays: ["Tuesday", "Wednesday", "Friday", "Saturday"],
+    availableDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     consultationFee: 600,
   },
   {
@@ -63,7 +63,7 @@ export const doctors: Doctor[] = [
     description:
       "Dr. Manas Mukul Mondal is a senior general and laparoscopic surgeon with 18 years of operative experience. He specialises in minimally invasive procedures for hernia, gallbladder and appendix conditions, offering shorter hospital stays and faster recovery for his patients.",
     languages: ["English", "Hindi", "Bengali"],
-    availableDays: ["Monday", "Tuesday", "Thursday", "Friday"],
+    availableDays: [],
     consultationFee: 800,
   },
   {
@@ -78,7 +78,7 @@ export const doctors: Doctor[] = [
     description:
       "Dr. Ayan Dey manages diabetes, hypertension, thyroid disorders and other long-term conditions. His approach pairs medication with practical, sustainable lifestyle changes, and he runs structured follow-up plans so patients can see their numbers improve over time.",
     languages: ["English", "Hindi", "Bengali"],
-    availableDays: ["Monday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    availableDays: ["Monday", "Tuesday"],
     consultationFee: 650,
   },
 ];

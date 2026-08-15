@@ -151,30 +151,33 @@ export default async function DoctorDetailPage(
               ))}
             </ul>
 
-            <h3 className={SUBHEADING}>Available Days</h3>
-            <ul className="flex flex-wrap gap-2.5">
-              {doctor.availableDays.map((day) => (
-                <li key={day} className={PILL}>
-                  {day}
-                </li>
-              ))}
-            </ul>
-
-            <h3 className={SUBHEADING}>Languages</h3>
+            {doctor.availableDays.length > 0 && (
+              <>
+                <h3 className={SUBHEADING}>Available Days</h3>
+                <ul className="flex flex-wrap gap-2.5">
+                  {doctor.availableDays.map((day) => (
+                    <li key={day} className={PILL}>
+                      {day}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {/* <h3 className={SUBHEADING}>Languages</h3>
             <ul className="flex flex-wrap gap-2.5">
               {doctor.languages.map((language) => (
                 <li key={language} className={PILL}>
                   {language}
                 </li>
               ))}
-            </ul>
+            </ul> */}
 
             <div className="mt-7.5 flex flex-wrap items-center justify-center gap-3.5 md:justify-start">
               <ButtonLink
                 href={`/appointment?doctor=${doctor.id}`}
                 block={false}
               >
-                Book with {doctor.name.split(" ")[1] ?? doctor.name}
+                Book with Dr. {doctor.name.split(" ")[1] ?? doctor.name}
               </ButtonLink>
               <ButtonLink href="/doctors" variant="secondary" block={false}>
                 All Doctors
