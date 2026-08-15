@@ -40,9 +40,13 @@ export default function DoctorCard({
         />
       </Link>
 
-      <h3 className="mt-3 mb-1.5 font-display text-[1.2rem] leading-snug font-semibold text-ink">
+      <Link
+        href={`/doctors/${doctor.id}`}
+        aria-label={`View ${doctor.name}'s profile`}
+        className="mt-3 mb-1.5 font-display text-[1.2rem] leading-snug font-semibold text-ink"
+      >
         {doctor.name}
-      </h3>
+      </Link>
 
       <p className="font-semibold text-primary md:leading-normal">
         {doctor.speciality}
@@ -50,23 +54,15 @@ export default function DoctorCard({
 
       <p className="md:leading-normal">{doctor.tagline}</p>
 
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 self-end">
+      {/* <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 self-end">
         <Link
           href={`/doctors/${doctor.id}`}
           className="inline-flex min-h-11 items-center px-1.5 font-semibold text-primary hover:underline"
         >
           View Profile
         </Link>
-        {/* {showBooking ? (
-          <ButtonLink
-            href={`/appointment?doctor=${doctor.id}`}
-            size="md"
-            block={false}
-          >
-            Book
-          </ButtonLink>
-        ) : null} */}
-      </div>
+       
+      </div> */}
     </article>
   );
 }
