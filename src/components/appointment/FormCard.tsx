@@ -41,7 +41,11 @@ export default function FormCard({
 
 /** Two columns from `md` up, stacked below. */
 export function FormRow({ children }: { children: React.ReactNode }) {
-  return <div className="grid gap-4.5 md:grid-cols-2">{children}</div>;
+  // `grid-cols-1` (i.e. minmax(0, 1fr)) rather than an implicit auto track, so a
+  // long option label in a child can't stretch the column past the viewport.
+  return (
+    <div className="grid grid-cols-1 gap-4.5 md:grid-cols-2">{children}</div>
+  );
 }
 
 export const SUBMIT_BUTTON =
