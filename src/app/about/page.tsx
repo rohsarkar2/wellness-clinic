@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import Hero, { HeroContent } from "@/components/layout/Hero";
 import MapSection from "@/components/layout/MapSection";
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import Section from "@/components/ui/Section";
@@ -42,7 +42,8 @@ const HIGHLIGHTS = [
 const VALUES = [
   {
     title: "Our Mission",
-    description: "To provide accessible, affordable, and high-quality healthcare for every patient.",
+    description:
+      "To provide accessible, affordable, and high-quality healthcare for every patient.",
   },
   {
     title: "Our Vision",
@@ -69,8 +70,9 @@ export default function AboutPage() {
               Committed To Better Healthcare Every Day
             </h1>
             <p className="mx-auto mb-7 max-w-140 lg:mx-0">
-              {site.name} is dedicated to delivering trusted healthcare through experienced doctors,
-              modern technology, and compassionate patient care.
+              {site.name} is dedicated to delivering trusted healthcare through
+              experienced doctors, modern technology, and compassionate patient
+              care.
             </p>
             <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 md:flex-row lg:justify-start">
               <ButtonLink href="/contact">Contact Us</ButtonLink>

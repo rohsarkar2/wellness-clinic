@@ -4,7 +4,7 @@ import Image from "next/image";
 import Hero, { HeroContent } from "@/components/layout/Hero";
 import ServiceCard from "@/components/services/ServiceCard";
 import Alert from "@/components/ui/Alert";
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import Section from "@/components/ui/Section";
@@ -20,10 +20,26 @@ export const metadata: Metadata = {
 };
 
 const PROCESS = [
-  { icon: "fa-solid fa-calendar-plus", title: "Book", description: "Choose a convenient appointment slot." },
-  { icon: "fa-solid fa-user-doctor", title: "Consult", description: "Meet our experienced medical team." },
-  { icon: "fa-solid fa-file-medical", title: "Diagnosis", description: "Receive accurate reports and advice." },
-  { icon: "fa-solid fa-heart", title: "Follow-up", description: "Ongoing care for better health." },
+  {
+    icon: "fa-solid fa-calendar-plus",
+    title: "Book",
+    description: "Choose a convenient appointment slot.",
+  },
+  {
+    icon: "fa-solid fa-user-doctor",
+    title: "Consult",
+    description: "Meet our experienced medical team.",
+  },
+  {
+    icon: "fa-solid fa-file-medical",
+    title: "Diagnosis",
+    description: "Receive accurate reports and advice.",
+  },
+  {
+    icon: "fa-solid fa-heart",
+    title: "Follow-up",
+    description: "Ongoing care for better health.",
+  },
 ];
 
 export default async function ServicesPage() {
@@ -48,9 +64,10 @@ export default async function ServicesPage() {
               Comprehensive Healthcare Under One Roof
             </h1>
             <p className="mx-auto mb-7 max-w-140 lg:mx-0">
-              From preventive health checkups to specialized consultations, Wellness Health Point
-              offers expert medical care with modern facilities, experienced doctors, and
-              compassionate treatment for patients of every age.
+              From preventive health checkups to specialized consultations,
+              Wellness Health Point offers expert medical care with modern
+              facilities, experienced doctors, and compassionate treatment for
+              patients of every age.
             </p>
             <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 md:flex-row lg:justify-start">
               <ButtonLink href="/appointment">Book Appointment</ButtonLink>

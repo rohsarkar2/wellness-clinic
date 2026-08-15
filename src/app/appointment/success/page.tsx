@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import { site, telHref } from "@/lib/site";
@@ -16,7 +16,9 @@ function first(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? "") : (value ?? "");
 }
 
-export default async function AppointmentSuccessPage(props: PageProps<"/appointment/success">) {
+export default async function AppointmentSuccessPage(
+  props: PageProps<"/appointment/success">,
+) {
   const params = await props.searchParams;
 
   const reference = first(params.ref);
@@ -46,7 +48,8 @@ export default async function AppointmentSuccessPage(props: PageProps<"/appointm
           </h1>
           <p>
             {name ? `Thanks, ${name}. ` : "Thank you. "}
-            Your request has been received and our front desk will call you shortly to confirm.
+            Your request has been received and our front desk will call you
+            shortly to confirm.
           </p>
 
           {reference ? (
@@ -57,15 +60,17 @@ export default async function AppointmentSuccessPage(props: PageProps<"/appointm
                   className="flex flex-col gap-0.5 border-b border-[#eef2f7] px-4 py-3 last:border-b-0 sm:flex-row sm:justify-between sm:gap-5 sm:px-5 sm:py-3.5"
                 >
                   <dt className="text-[0.92rem] text-[#7a8794]">{row.term}</dt>
-                  <dd className="font-semibold text-ink sm:text-right">{row.value}</dd>
+                  <dd className="font-semibold text-ink sm:text-right">
+                    {row.value}
+                  </dd>
                 </div>
               ))}
             </dl>
           ) : null}
 
           <p>
-            Please arrive 10 minutes early and bring any previous prescriptions or reports. To
-            reschedule, call us on {site.phonePrimary}.
+            Please arrive 10 minutes early and bring any previous prescriptions
+            or reports. To reschedule, call us on {site.phonePrimary}.
           </p>
 
           <div className="mt-7.5 flex flex-wrap justify-center gap-3.5">

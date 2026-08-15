@@ -4,7 +4,7 @@ import Image from "next/image";
 import DoctorGrid from "@/components/doctors/DoctorGrid";
 import Hero, { HeroContent } from "@/components/layout/Hero";
 import Alert from "@/components/ui/Alert";
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import { EmptyState } from "@/components/ui/Loading";
@@ -21,10 +21,26 @@ export const metadata: Metadata = {
 };
 
 const TEAM_VALUES = [
-  { icon: "fa-solid fa-user-doctor", title: "Qualified Experts", description: "Highly trained specialists." },
-  { icon: "fa-solid fa-award", title: "Trusted Care", description: "Patient-first approach." },
-  { icon: "fa-solid fa-microscope", title: "Modern Diagnostics", description: "Advanced medical support." },
-  { icon: "fa-solid fa-heart", title: "Compassion", description: "Personalized treatment plans." },
+  {
+    icon: "fa-solid fa-user-doctor",
+    title: "Qualified Experts",
+    description: "Highly trained specialists.",
+  },
+  {
+    icon: "fa-solid fa-award",
+    title: "Trusted Care",
+    description: "Patient-first approach.",
+  },
+  {
+    icon: "fa-solid fa-microscope",
+    title: "Modern Diagnostics",
+    description: "Advanced medical support.",
+  },
+  {
+    icon: "fa-solid fa-heart",
+    title: "Compassion",
+    description: "Personalized treatment plans.",
+  },
 ];
 
 export default async function DoctorsPage() {
@@ -49,8 +65,8 @@ export default async function DoctorsPage() {
               Meet Our Experienced Medical Team
             </h1>
             <p className="mx-auto mb-7 max-w-140 lg:mx-0">
-              Our specialists combine experience, compassion and modern medicine to deliver
-              exceptional patient care.
+              Our specialists combine experience, compassion and modern medicine
+              to deliver exceptional patient care.
             </p>
             <div className="flex justify-center lg:justify-start">
               <ButtonLink href="/appointment">Book Consultation</ButtonLink>
@@ -80,7 +96,8 @@ export default async function DoctorsPage() {
 
           {error ? (
             <Alert variant="error">
-              {error} Please refresh the page — if the problem continues, call us on +91 6291664625.
+              {error} Please refresh the page — if the problem continues, call
+              us on +91 6291664625.
             </Alert>
           ) : doctors.length === 0 ? (
             <EmptyState
@@ -95,7 +112,10 @@ export default async function DoctorsPage() {
 
       <Section className="bg-mist">
         <Container>
-          <SectionTitle eyebrow="Why Our Team" title="Dedicated To Better Healthcare" />
+          <SectionTitle
+            eyebrow="Why Our Team"
+            title="Dedicated To Better Healthcare"
+          />
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {TEAM_VALUES.map((item) => (
               <FeatureCard key={item.title} {...item} />

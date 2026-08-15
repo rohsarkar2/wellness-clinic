@@ -4,7 +4,7 @@ import Image from "next/image";
 import EnquiryForm from "@/components/contact/EnquiryForm";
 import Hero, { HeroContent } from "@/components/layout/Hero";
 import MapSection from "@/components/layout/MapSection";
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import Section from "@/components/ui/Section";
@@ -19,8 +19,16 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   const details = [
-    { icon: "fa-solid fa-location-dot", title: "Address", description: site.address },
-    { icon: "fa-solid fa-phone", title: "Phone", description: site.phonePrimary },
+    {
+      icon: "fa-solid fa-location-dot",
+      title: "Address",
+      description: site.address,
+    },
+    {
+      icon: "fa-solid fa-phone",
+      title: "Phone",
+      description: site.phonePrimary,
+    },
     { icon: "fa-solid fa-envelope", title: "Email", description: site.email },
     { icon: "fa-solid fa-clock", title: "Hours", description: site.hours },
   ];
@@ -37,8 +45,8 @@ export default function ContactPage() {
               We&apos;re Here To Help
             </h1>
             <p className="mx-auto mb-7 max-w-140 lg:mx-0">
-              Reach out to our team to book appointments, ask questions, or learn more about our
-              healthcare services.
+              Reach out to our team to book appointments, ask questions, or
+              learn more about our healthcare services.
             </p>
             <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 md:flex-row lg:justify-start">
               <ButtonLink href="#enquiry">Send a Message</ButtonLink>
@@ -74,7 +82,12 @@ export default function ContactPage() {
           </div>
 
           <div className="mt-10 text-center">
-            <ButtonLink href={whatsappHref} variant="secondary" target="_blank" rel="noopener noreferrer">
+            <ButtonLink
+              href={whatsappHref}
+              variant="secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i className="fa-brands fa-whatsapp" aria-hidden="true" />
               Message us on WhatsApp
             </ButtonLink>

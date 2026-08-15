@@ -1,4 +1,4 @@
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 
@@ -13,7 +13,10 @@ export default function NotFound() {
           <h1 className="mb-3 font-display text-[1.6rem] font-bold text-ink sm:text-[2rem]">
             Page Not Found
           </h1>
-          <p>The page you&apos;re looking for doesn&apos;t exist or has been moved.</p>
+          <p>
+            The page you&apos;re looking for doesn&apos;t exist or has been
+            moved.
+          </p>
           <div className="mt-7.5 flex flex-wrap justify-center gap-3.5">
             <ButtonLink href="/" block={false}>
               Back to Home

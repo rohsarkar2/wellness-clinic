@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import { ApiError } from "@/lib/api/client";
@@ -30,7 +30,9 @@ async function loadDoctor(id: string): Promise<Doctor> {
   }
 }
 
-export async function generateMetadata(props: PageProps<"/doctors/[id]">): Promise<Metadata> {
+export async function generateMetadata(
+  props: PageProps<"/doctors/[id]">,
+): Promise<Metadata> {
   const { id } = await props.params;
 
   try {
@@ -44,17 +46,33 @@ export async function generateMetadata(props: PageProps<"/doctors/[id]">): Promi
   }
 }
 
-const SUBHEADING = "mt-6.5 mb-3 font-display text-[1.2rem] font-semibold text-ink";
-const PILL = "rounded-full bg-mist px-4 py-1.75 text-[0.9rem] font-semibold text-primary";
+const SUBHEADING =
+  "mt-6.5 mb-3 font-display text-[1.2rem] font-semibold text-ink";
+const PILL =
+  "rounded-full bg-mist px-4 py-1.75 text-[0.9rem] font-semibold text-primary";
 
-export default async function DoctorDetailPage(props: PageProps<"/doctors/[id]">) {
+export default async function DoctorDetailPage(
+  props: PageProps<"/doctors/[id]">,
+) {
   const { id } = await props.params;
   const doctor = await loadDoctor(id);
 
   const meta = [
-    { icon: "fa-solid fa-briefcase-medical", value: `${doctor.experienceYears} years`, label: "Experience" },
-    { icon: "fa-solid fa-hospital", value: doctor.department, label: "Department" },
-    { icon: "fa-solid fa-indian-rupee-sign", value: `₹${doctor.consultationFee}`, label: "Consultation" },
+    {
+      icon: "fa-solid fa-briefcase-medical",
+      value: `${doctor.experienceYears} years`,
+      label: "Experience",
+    },
+    {
+      icon: "fa-solid fa-hospital",
+      value: doctor.department,
+      label: "Department",
+    },
+    {
+      icon: "fa-solid fa-indian-rupee-sign",
+      value: `₹${doctor.consultationFee}`,
+      label: "Consultation",
+    },
   ];
 
   return (
@@ -86,7 +104,10 @@ export default async function DoctorDetailPage(props: PageProps<"/doctors/[id]">
               priority
               className="mb-5 aspect-square w-full rounded-card object-cover"
             />
-            <ButtonLink href={`/appointment?doctor=${doctor.id}`} className="mx-auto">
+            <ButtonLink
+              href={`/appointment?doctor=${doctor.id}`}
+              className="mx-auto"
+            >
               <i className="fa-solid fa-calendar-check" aria-hidden="true" />
               Book Appointment
             </ButtonLink>
@@ -96,12 +117,17 @@ export default async function DoctorDetailPage(props: PageProps<"/doctors/[id]">
             <h1 className="mb-1.5 font-display text-[1.65rem] font-bold text-ink sm:text-[1.9rem] lg:text-[2.4rem]">
               {doctor.name}
             </h1>
-            <p className="text-[1.1rem] font-semibold text-primary">{doctor.speciality}</p>
+            <p className="text-[1.1rem] font-semibold text-primary">
+              {doctor.speciality}
+            </p>
 
             <div className="my-6 grid gap-4.5 border-y border-[#eef2f7] py-5 sm:grid-cols-3 md:flex md:flex-wrap md:gap-7.5">
               {meta.map((item) => (
                 <div key={item.label} className="flex items-center gap-2.5">
-                  <i className={`text-[1.3rem] text-primary ${item.icon}`} aria-hidden="true" />
+                  <i
+                    className={`text-[1.3rem] text-primary ${item.icon}`}
+                    aria-hidden="true"
+                  />
                   <span>
                     <strong className="block text-ink">{item.value}</strong>
                     {item.label}
@@ -141,7 +167,10 @@ export default async function DoctorDetailPage(props: PageProps<"/doctors/[id]">
             </ul>
 
             <div className="mt-7.5 flex flex-wrap items-center justify-center gap-3.5 md:justify-start">
-              <ButtonLink href={`/appointment?doctor=${doctor.id}`} block={false}>
+              <ButtonLink
+                href={`/appointment?doctor=${doctor.id}`}
+                block={false}
+              >
                 Book with {doctor.name.split(" ")[1] ?? doctor.name}
               </ButtonLink>
               <ButtonLink href="/doctors" variant="secondary" block={false}>

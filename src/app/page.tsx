@@ -4,7 +4,7 @@ import EnquiryForm from "@/components/contact/EnquiryForm";
 import DoctorGrid from "@/components/doctors/DoctorGrid";
 import Hero, { HeroContent } from "@/components/layout/Hero";
 import ServiceCard from "@/components/services/ServiceCard";
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import Section from "@/components/ui/Section";
@@ -13,9 +13,21 @@ import { getDoctors } from "@/lib/api/doctors";
 import { getServices } from "@/lib/api/services";
 
 const HERO_FEATURES = [
-  { icon: "fa-solid fa-user-doctor", title: "Expert Doctors", description: "Experienced Specialists" },
-  { icon: "fa-solid fa-heart-pulse", title: "Advanced Care", description: "Modern Equipment" },
-  { icon: "fa-solid fa-clock", title: "Quick Support", description: "Easy Appointments" },
+  {
+    icon: "fa-solid fa-user-doctor",
+    title: "Expert Doctors",
+    description: "Experienced Specialists",
+  },
+  {
+    icon: "fa-solid fa-heart-pulse",
+    title: "Advanced Care",
+    description: "Modern Equipment",
+  },
+  {
+    icon: "fa-solid fa-clock",
+    title: "Quick Support",
+    description: "Easy Appointments",
+  },
 ];
 
 const STATS = [
@@ -36,7 +48,11 @@ const WHY_US = [
     title: "Advanced Technology",
     description: "Modern equipment and diagnostics.",
   },
-  { icon: "fa-solid fa-heart", title: "Patient-Centered Care", description: "Compassion at every step." },
+  {
+    icon: "fa-solid fa-heart",
+    title: "Patient-Centered Care",
+    description: "Compassion at every step.",
+  },
   {
     icon: "fa-solid fa-calendar-check",
     title: "Easy Appointments",
@@ -65,8 +81,8 @@ export default async function HomePage() {
             </h1>
 
             <p className="mx-auto mb-7 max-w-140 lg:mx-0">
-              Delivering quality healthcare with experienced doctors, modern diagnostics and
-              patient-focused treatment.
+              Delivering quality healthcare with experienced doctors, modern
+              diagnostics and patient-focused treatment.
             </p>
 
             <div className="mb-9 flex flex-col items-center justify-center gap-3 sm:gap-4 md:flex-row lg:mb-11 lg:justify-start">
@@ -78,8 +94,14 @@ export default async function HomePage() {
 
             <div className="grid gap-6 md:grid-cols-3">
               {HERO_FEATURES.map((feature) => (
-                <div key={feature.title} className="rounded-card bg-white p-4.5 text-center shadow-card">
-                  <i className={`mb-3.75 text-[2rem] text-primary ${feature.icon}`} aria-hidden="true" />
+                <div
+                  key={feature.title}
+                  className="rounded-card bg-white p-4.5 text-center shadow-card"
+                >
+                  <i
+                    className={`mb-3.75 text-[2rem] text-primary ${feature.icon}`}
+                    aria-hidden="true"
+                  />
                   <h4 className="mb-1.5 text-ink">{feature.title}</h4>
                   <p className="text-[0.9rem]">{feature.description}</p>
                 </div>
@@ -103,7 +125,10 @@ export default async function HomePage() {
 
         <Container className="relative z-3 mt-10 grid gap-px overflow-hidden rounded-[22px] bg-[#edf2f7] shadow-card sm:grid-cols-2 lg:mt-12.5 xl:grid-cols-4">
           {STATS.map((stat) => (
-            <div key={stat.label} className="bg-white px-3 py-5.5 text-center lg:p-7">
+            <div
+              key={stat.label}
+              className="bg-white px-3 py-5.5 text-center lg:p-7"
+            >
               <h3 className="text-[2rem] text-primary">{stat.value}</h3>
               <span className="text-[#666]">{stat.label}</span>
             </div>
@@ -145,7 +170,10 @@ export default async function HomePage() {
 
       <Section>
         <Container>
-          <SectionTitle eyebrow="WHY CHOOSE US" title="Why Choose Wellness Health Point?" />
+          <SectionTitle
+            eyebrow="WHY CHOOSE US"
+            title="Why Choose Wellness Health Point?"
+          />
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {WHY_US.map((item) => (
               <FeatureCard key={item.title} {...item} />
@@ -160,7 +188,10 @@ export default async function HomePage() {
             <h2 className="font-display text-[1.65rem] font-bold sm:text-[1.9rem] md:text-[2.3rem]">
               Your Health Is Our Commitment
             </h2>
-            <p>Book your appointment today and take the first step toward better health.</p>
+            <p>
+              Book your appointment today and take the first step toward better
+              health.
+            </p>
           </div>
           <ButtonLink href="/appointment" variant="onDark">
             Book Appointment
