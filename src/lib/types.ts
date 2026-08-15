@@ -40,6 +40,7 @@ export interface AvailabilityResponse {
 
 export interface AppointmentPayload {
   doctorId: string;
+  doctorName: string;
   date: string;
   time: string;
   patientName: string;

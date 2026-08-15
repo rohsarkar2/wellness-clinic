@@ -3,10 +3,18 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-import FormCard, { FormRow, SUBMIT_BUTTON } from "@/components/appointment/FormCard";
+import FormCard, {
+  FormRow,
+  SUBMIT_BUTTON,
+} from "@/components/appointment/FormCard";
 import TimeSlotSelector from "@/components/appointment/TimeSlotSelector";
 import Alert from "@/components/ui/Alert";
-import { DateField, InputField, SelectField, TextareaField } from "@/components/ui/Field";
+import {
+  DateField,
+  InputField,
+  SelectField,
+  TextareaField,
+} from "@/components/ui/Field";
 import { Spinner } from "@/components/ui/Loading";
 import { createAppointment, getAvailability } from "@/lib/api/appointments";
 import { toErrorMessage } from "@/lib/api/client";
@@ -18,6 +26,7 @@ const MAX_ADVANCE_DAYS = 60;
 
 const EMPTY: AppointmentPayload = {
   doctorId: "",
+  doctorName: "",
   date: "",
   time: "",
   patientName: "",
@@ -35,6 +44,7 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
   const [values, setValues] = useState<AppointmentPayload>({
     ...EMPTY,
     doctorId: doctors.some((d) => d.id === preselected) ? preselected : "",
+    doctorName: doctors.find((d) => d.id === preselected)?.name ?? "",
   });
 
   const [errors, setErrors] = useState<Errors<AppointmentPayload>>({});
@@ -55,7 +65,10 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
   const slots = availability.key === requestKey ? availability.slots : [];
 
   const setField = useCallback(
-    <K extends keyof AppointmentPayload>(key: K, value: AppointmentPayload[K]) => {
+    <K extends keyof AppointmentPayload>(
+      key: K,
+      value: AppointmentPayload[K],
+    ) => {
       setValues((current) => ({
         ...current,
         [key]: value,
@@ -77,12 +90,20 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
     getAvailability(nextDoctorId, nextDate)
       .then((response) => {
         if (!cancelled) {
-          setAvailability({ key: requestKey, slots: response.slots, notice: response.notice });
+          setAvailability({
+            key: requestKey,
+            slots: response.slots,
+            notice: response.notice,
+          });
         }
       })
       .catch((error) => {
         if (!cancelled) {
-          setAvailability({ key: requestKey, slots: [], error: toErrorMessage(error) });
+          setAvailability({
+            key: requestKey,
+            slots: [],
+            error: toErrorMessage(error),
+          });
         }
       });
 
@@ -120,7 +141,11 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
       if (requestKey) {
         getAvailability(doctorId, date)
           .then((response) =>
-            setAvailability({ key: requestKey, slots: response.slots, notice: response.notice }),
+            setAvailability({
+              key: requestKey,
+              slots: response.slots,
+              notice: response.notice,
+            }),
           )
           .catch(() => undefined);
       }
@@ -167,14 +192,24 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
 
         {selectedDoctor ? (
           <p className="text-center text-[0.9rem] text-[#777]">
-            <i className="mr-1.5 fa-solid fa-clock text-primary" aria-hidden="true" />
-            {selectedDoctor.name} consults on {selectedDoctor.availableDays.join(", ")}.
+            <i
+              className="mr-1.5 fa-solid fa-clock text-primary"
+              aria-hidden="true"
+            />
+            {selectedDoctor.name} consults on{" "}
+            {selectedDoctor.availableDays.join(", ")}.
           </p>
         ) : null}
 
         <div className="flex flex-col">
-          <label htmlFor="time-slots" className="mb-2 text-[0.9rem] font-semibold text-ink">
-            <i className="mr-1.5 fa-solid fa-hourglass-half text-primary" aria-hidden="true" />
+          <label
+            htmlFor="time-slots"
+            className="mb-2 text-[0.9rem] font-semibold text-ink"
+          >
+            <i
+              className="mr-1.5 fa-solid fa-hourglass-half text-primary"
+              aria-hidden="true"
+            />
             Available Time Slots
           </label>
           <div id="time-slots">
@@ -186,11 +221,17 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
               error={availability.error}
               notice={availability.notice}
               placeholder={
-                !doctorId || !date ? "Select a doctor and date to see available times." : undefined
+                !doctorId || !date
+                  ? "Select a doctor and date to see available times."
+                  : undefined
               }
             />
           </div>
-          {errors.time ? <p className="mt-1.5 text-[0.82rem] text-[#d13b4a]">{errors.time}</p> : null}
+          {errors.time ? (
+            <p className="mt-1.5 text-[0.82rem] text-[#d13b4a]">
+              {errors.time}
+            </p>
+          ) : null}
         </div>
 
         <FormRow>
@@ -257,7 +298,10 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
       </form>
 
       <div className="mt-5 text-center text-[0.9rem] text-[#777]">
-        <i className="mr-1.5 fa-solid fa-shield-heart text-primary" aria-hidden="true" />
+        <i
+          className="mr-1.5 fa-solid fa-shield-heart text-primary"
+          aria-hidden="true"
+        />
         Your information is secure.
       </div>
     </FormCard>

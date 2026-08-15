@@ -132,7 +132,13 @@ export function SelectField({
 }) {
   return (
     <FieldShell id={id} label={label} icon={icon} error={error}>
-      <Select value={value} onValueChange={(next) => onValueChange(next ?? "")}>
+      {/* `items` is what makes the trigger show the option's label; without it
+          Base UI's `SelectValue` renders the raw value. */}
+      <Select
+        items={options}
+        value={value}
+        onValueChange={(next) => onValueChange(next ?? "")}
+      >
         {/* The height override has to carry the same `data-[size=...]` modifier
             as shadcn's own rule, or tailwind-merge keeps both and the variant
             one wins. */}
