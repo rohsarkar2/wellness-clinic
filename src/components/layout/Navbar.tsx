@@ -118,7 +118,7 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <div className="px-[6%] py-4.5 lg:hidden">
+          {/* <div className="px-[6%] py-4.5 lg:hidden">
             <ButtonLink
               href="/appointment"
               onClick={close}
@@ -128,7 +128,7 @@ export default function Navbar() {
               <i className="fa-solid fa-calendar-check" aria-hidden="true" />
               Book Appointment
             </ButtonLink>
-          </div>
+          </div> */}
         </nav>
 
         {/* `max-lg:hidden`, not `hidden lg:inline-flex` — an unprefixed `hidden`
