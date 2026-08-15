@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 
-import FormCard, { FormRow, SUBMIT_BUTTON } from "@/components/appointment/FormCard";
+import FormCard, {
+  FormRow,
+  SUBMIT_BUTTON,
+} from "@/components/appointment/FormCard";
 import Alert from "@/components/ui/Alert";
 import { InputField, SelectField, TextareaField } from "@/components/ui/Field";
 import { Spinner } from "@/components/ui/Loading";
@@ -12,7 +15,13 @@ import { departments } from "@/lib/data/services";
 import type { ContactPayload } from "@/lib/types";
 import { hasErrors, validateContact, type Errors } from "@/lib/validation";
 
-const EMPTY: ContactPayload = { name: "", email: "", phone: "", department: "", message: "" };
+const EMPTY: ContactPayload = {
+  name: "",
+  email: "",
+  phone: "",
+  department: "",
+  message: "",
+};
 
 interface EnquiryFormProps {
   title?: string;
@@ -33,9 +42,15 @@ export default function EnquiryForm({
   const [values, setValues] = useState<ContactPayload>(EMPTY);
   const [errors, setErrors] = useState<Errors<ContactPayload>>({});
   const [submitting, setSubmitting] = useState(false);
-  const [status, setStatus] = useState<{ type: "success" | "error"; message: string }>();
+  const [status, setStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  }>();
 
-  function setField<K extends keyof ContactPayload>(key: K, value: ContactPayload[K]) {
+  function setField<K extends keyof ContactPayload>(
+    key: K,
+    value: ContactPayload[K],
+  ) {
     setValues((current) => ({ ...current, [key]: value }));
     setErrors((current) => ({ ...current, [key]: undefined }));
   }
@@ -62,7 +77,11 @@ export default function EnquiryForm({
 
   return (
     <FormCard title={title} subtitle={subtitle} wide={wide}>
-      <form onSubmit={handleSubmit} noValidate className="grid gap-4.5">
+      <form
+        onSubmit={handleSubmit}
+        noValidate
+        className="grid grid-cols-1 gap-4.5"
+      >
         {status ? <Alert variant={status.type}>{status.message}</Alert> : null}
 
         <FormRow>
@@ -149,7 +168,10 @@ export default function EnquiryForm({
       </form>
 
       <div className="mt-5 text-center text-[0.9rem] text-[#777]">
-        <i className="mr-1.5 fa-solid fa-shield-heart text-primary" aria-hidden="true" />
+        <i
+          className="mr-1.5 fa-solid fa-shield-heart text-primary"
+          aria-hidden="true"
+        />
         Your information is secure.
       </div>
     </FormCard>

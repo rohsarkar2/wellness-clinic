@@ -9,14 +9,17 @@ import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { toErrorMessage } from "@/lib/api/client";
 import { getDoctors } from "@/lib/api/doctors";
+import { OG_IMAGES, pageMetadata } from "@/lib/metadata";
 import { site } from "@/lib/site";
 import type { Doctor } from "@/lib/types";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Book an Appointment",
   description:
     "Book an appointment at Wellness Health Point — choose your doctor, pick an available time slot and we'll confirm by phone.",
-};
+  path: "/appointment",
+  image: { ...OG_IMAGES.clinic, alt: `Book a consultation at ${site.name}` },
+});
 
 export default async function AppointmentPage() {
   let doctors: Doctor[] = [];

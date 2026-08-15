@@ -9,13 +9,16 @@ import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
+import { OG_IMAGES, pageMetadata } from "@/lib/metadata";
 import { site, telHref, whatsappHref } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact",
   description:
     "Contact Wellness Health Point — address, phone numbers, clinic hours and an enquiry form for appointments and questions.",
-};
+  path: "/contact",
+  image: { ...OG_IMAGES.clinic, alt: `${site.name} in ${site.address}` },
+});
 
 export default function ContactPage() {
   const details = [

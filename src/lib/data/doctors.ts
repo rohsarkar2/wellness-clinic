@@ -63,7 +63,7 @@ export const doctors: Doctor[] = [
     description:
       "Dr. Manas Mukul Mondal is a senior general and laparoscopic surgeon with 18 years of operative experience. He specialises in minimally invasive procedures for hernia, gallbladder and appendix conditions, offering shorter hospital stays and faster recovery for his patients.",
     languages: ["English", "Hindi", "Bengali"],
-    availableDays: [],
+    availableDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     consultationFee: 800,
   },
   {

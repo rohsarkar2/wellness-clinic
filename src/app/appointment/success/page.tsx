@@ -3,14 +3,18 @@ import type { Metadata } from "next";
 import { ButtonLink } from "@/components/ui/button";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
+import { OG_IMAGES, pageMetadata } from "@/lib/metadata";
 import { site, telHref } from "@/lib/site";
 import { formatDate, formatTime } from "@/lib/utils/date";
 
-export const metadata: Metadata = {
+/** Noindex: the page only makes sense with the booking details in the query. */
+export const metadata: Metadata = pageMetadata({
   title: "Appointment Requested",
   description: "Your appointment request has been received.",
-  robots: { index: false },
-};
+  path: "/appointment/success",
+  image: { ...OG_IMAGES.clinic, alt: site.name },
+  noindex: true,
+});
 
 function first(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? "") : (value ?? "");

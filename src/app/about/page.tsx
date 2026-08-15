@@ -8,13 +8,16 @@ import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
+import { OG_IMAGES, pageMetadata } from "@/lib/metadata";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
     "Wellness Health Point is dedicated to trusted healthcare through experienced doctors, modern technology and compassionate patient care.",
-};
+  path: "/about",
+  image: { ...OG_IMAGES.about, alt: `Inside ${site.name}` },
+});
 
 const HIGHLIGHTS = [
   {

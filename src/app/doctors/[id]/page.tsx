@@ -8,6 +8,7 @@ import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import { ApiError } from "@/lib/api/client";
 import { getDoctorById, getDoctors } from "@/lib/api/doctors";
+import { pageMetadata } from "@/lib/metadata";
 import { site } from "@/lib/site";
 import type { Doctor } from "@/lib/types";
 
@@ -37,12 +38,22 @@ export async function generateMetadata(
 
   try {
     const doctor = await getDoctorById(id);
-    return {
+    return pageMetadata({
       title: doctor.name,
-      description: `${doctor.name} — ${doctor.speciality} at ${site.name}. ${doctor.experienceYears} years of experience.`,
-    };
+      description: `${doctor.name} — ${doctor.speciality} at ${site.name}. ${doctor.experienceYears} years of experience. ${doctor.qualifications.join(", ")}. Book a consultation online.`,
+      path: `/doctors/${doctor.id}`,
+      // Portraits are 4:5, unlike the 3:2 artwork used elsewhere.
+      image: {
+        url: doctor.image,
+        alt: `${doctor.name}, ${doctor.speciality}`,
+        width: 1080,
+        height: 1350,
+      },
+      type: "profile",
+    });
   } catch {
-    return { title: "Doctor" };
+    // An unknown id renders the 404 below; don't let it be indexed.
+    return { title: "Doctor", robots: { index: false, follow: true } };
   }
 }
 
@@ -78,7 +89,7 @@ export default async function DoctorDetailPage(
   return (
     <Section>
       <Container>
-        <nav
+        {/* <nav
           aria-label="Breadcrumb"
           className="mb-4.5 flex flex-wrap items-center gap-2 text-[0.9rem] text-[#93a1b0] md:mb-6"
         >
@@ -91,7 +102,7 @@ export default async function DoctorDetailPage(
           </Link>
           <span aria-hidden="true">/</span>
           <span>{doctor.name}</span>
-        </nav>
+        </nav> */}
 
         <div className="grid items-start gap-7.5 lg:grid-cols-[320px_1fr] lg:gap-12.5">
           <aside className="mx-auto max-w-80 rounded-card bg-white p-6 text-center shadow-card lg:mx-0 lg:max-w-none">
@@ -179,9 +190,9 @@ export default async function DoctorDetailPage(
               >
                 Book with Dr. {doctor.name.split(" ")[1] ?? doctor.name}
               </ButtonLink>
-              <ButtonLink href="/doctors" variant="secondary" block={false}>
+              {/* <ButtonLink href="/doctors" variant="secondary" block={false}>
                 All Doctors
-              </ButtonLink>
+              </ButtonLink> */}
             </div>
           </div>
         </div>

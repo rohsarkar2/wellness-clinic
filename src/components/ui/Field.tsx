@@ -38,7 +38,7 @@ interface FieldShellProps {
 
 function FieldShell({ id, label, icon, error, children }: FieldShellProps) {
   return (
-    <div className="flex flex-col">
+    <div className="flex min-w-0 flex-col">
       <Label htmlFor={id} className="mb-2 text-[0.9rem] font-semibold text-ink">
         {icon ? (
           <i className={cn("text-primary", icon)} aria-hidden="true" />
@@ -144,14 +144,28 @@ export function SelectField({
             one wins. */}
         <SelectTrigger
           id={id}
-          className={cn(CONTROL, "justify-between data-[size=default]:h-13.25")}
+          className={cn(
+            CONTROL,
+            "min-w-0 justify-between overflow-hidden data-[size=default]:h-13.25",
+            // shadcn's trigger styles the value slot as a line-clamped flex box,
+            // and a flex box won't ellipsize its own text. A descendant selector
+            // outranks those `*:` rules, so the label reliably truncates instead
+            // of spilling out of the control.
+            "[&>[data-slot=select-value]]:block [&>[data-slot=select-value]]:min-w-0 [&>[data-slot=select-value]]:overflow-hidden [&>[data-slot=select-value]]:text-ellipsis [&>[data-slot=select-value]]:whitespace-nowrap",
+          )}
           {...a11yProps(id, error)}
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
+            <SelectItem
+              key={option.value}
+              /* The popup is only as wide as the trigger, so let long labels
+                 wrap rather than run off the edge. */
+              className="[&>div]:min-w-0 [&>div]:shrink [&>div]:whitespace-normal"
+              value={option.value}
+            >
               {option.label}
             </SelectItem>
           ))}

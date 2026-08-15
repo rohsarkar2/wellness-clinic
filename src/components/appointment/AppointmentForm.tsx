@@ -155,12 +155,18 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
 
   const selectedDoctor = doctors.find((d) => d.id === doctorId);
 
+  console.log(selectedDoctor);
+
   return (
     <FormCard
       title="Book an Appointment"
       subtitle="Choose a doctor and a time that suits you — we'll confirm by phone."
     >
-      <form onSubmit={handleSubmit} noValidate className="grid gap-4.5">
+      <form
+        onSubmit={handleSubmit}
+        noValidate
+        className="grid grid-cols-1 gap-4.5"
+      >
         {submitError ? <Alert variant="error">{submitError}</Alert> : null}
 
         <FormRow>
@@ -190,7 +196,7 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
           />
         </FormRow>
 
-        {selectedDoctor ? (
+        {selectedDoctor && selectedDoctor.availableDays.length > 0 ? (
           <p className="text-center text-[0.9rem] text-[#777]">
             <i
               className="mr-1.5 fa-solid fa-clock text-primary"
@@ -201,38 +207,40 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
           </p>
         ) : null}
 
-        <div className="flex flex-col">
-          <label
-            htmlFor="time-slots"
-            className="mb-2 text-[0.9rem] font-semibold text-ink"
-          >
-            <i
-              className="mr-1.5 fa-solid fa-hourglass-half text-primary"
-              aria-hidden="true"
-            />
-            Available Time Slots
-          </label>
-          <div id="time-slots">
-            <TimeSlotSelector
-              slots={slots}
-              value={values.time}
-              onChange={(time) => setField("time", time)}
-              loading={slotsLoading}
-              error={availability.error}
-              notice={availability.notice}
-              placeholder={
-                !doctorId || !date
-                  ? "Select a doctor and date to see available times."
-                  : undefined
-              }
-            />
+        {selectedDoctor && selectedDoctor.availableDays.length > 0 ? (
+          <div className="flex flex-col">
+            <label
+              htmlFor="time-slots"
+              className="mb-2 text-[0.9rem] font-semibold text-ink"
+            >
+              <i
+                className="mr-1.5 fa-solid fa-hourglass-half text-primary"
+                aria-hidden="true"
+              />
+              Available Time Slots
+            </label>
+            <div id="time-slots">
+              <TimeSlotSelector
+                slots={slots}
+                value={values.time}
+                onChange={(time) => setField("time", time)}
+                loading={slotsLoading}
+                error={availability.error}
+                notice={availability.notice}
+                placeholder={
+                  !doctorId || !date
+                    ? "Select a doctor and date to see available times."
+                    : undefined
+                }
+              />
+            </div>
+            {errors.time ? (
+              <p className="mt-1.5 text-[0.82rem] text-[#d13b4a]">
+                {errors.time}
+              </p>
+            ) : null}
           </div>
-          {errors.time ? (
-            <p className="mt-1.5 text-[0.82rem] text-[#d13b4a]">
-              {errors.time}
-            </p>
-          ) : null}
-        </div>
+        ) : null}
 
         <FormRow>
           <InputField

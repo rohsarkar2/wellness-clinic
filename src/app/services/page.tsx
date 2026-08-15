@@ -11,13 +11,20 @@ import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { toErrorMessage } from "@/lib/api/client";
 import { getServices } from "@/lib/api/services";
+import { OG_IMAGES, pageMetadata } from "@/lib/metadata";
+import { site } from "@/lib/site";
 import type { Service } from "@/lib/types";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Services",
   description:
     "Comprehensive healthcare under one roof — general medicine, cardiology, gynecology, orthopedics, diagnostics and preventive health checkups.",
-};
+  path: "/services",
+  image: {
+    ...OG_IMAGES.services,
+    alt: `Departments and services at ${site.name}`,
+  },
+});
 
 const PROCESS = [
   {

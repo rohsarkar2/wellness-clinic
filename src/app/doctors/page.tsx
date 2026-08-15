@@ -12,13 +12,17 @@ import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { toErrorMessage } from "@/lib/api/client";
 import { getDoctors } from "@/lib/api/doctors";
+import { OG_IMAGES, pageMetadata } from "@/lib/metadata";
+import { site } from "@/lib/site";
 import type { Doctor } from "@/lib/types";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Doctors",
   description:
     "Meet the experienced specialists at Wellness Health Point — paediatrics, gynaecology, ENT, surgery and diabetology.",
-};
+  path: "/doctors",
+  image: { ...OG_IMAGES.doctors, alt: `The medical team at ${site.name}` },
+});
 
 const TEAM_VALUES = [
   {

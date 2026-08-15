@@ -11,6 +11,15 @@ import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { getDoctors } from "@/lib/api/doctors";
 import { getServices } from "@/lib/api/services";
+import { OG_IMAGES, pageMetadata } from "@/lib/metadata";
+import { site } from "@/lib/site";
+
+/** No `title`, so the landing page keeps the layout's untemplated default. */
+export const metadata = pageMetadata({
+  description: site.description,
+  path: "/",
+  image: { ...OG_IMAGES.home, alt: `${site.name} — ${site.tagline}` },
+});
 
 const HERO_FEATURES = [
   {
