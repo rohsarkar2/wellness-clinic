@@ -123,9 +123,12 @@ export default async function DoctorDetailPage(
 
             <div className="my-6 grid gap-4.5 border-y border-[#eef2f7] py-5 sm:grid-cols-3 md:flex md:flex-wrap md:gap-7.5">
               {meta.map((item) => (
-                <div key={item.label} className="flex items-center gap-2.5">
+                <div
+                  key={item.label}
+                  className="flex items-center gap-2.5 border-b border-[#eef2f7] pb-4 last:border-b-0 last:pb-0 sm:border-b-0 sm:pb-0 md:border-r-2 md:border-[#eef2f7ce] md:pr-10 md:last:border-r-0"
+                >
                   <i
-                    className={`text-[1.3rem] text-primary ${item.icon}`}
+                    className={`text-[1.3rem]  text-primary ${item.icon}`}
                     aria-hidden="true"
                   />
                   <span>
