@@ -40,11 +40,14 @@ export default async function AppointmentPage() {
         <div className="mx-auto max-w-195">
           {error ? (
             <Alert variant="error">
-              {error} You can also call us on {site.phonePrimary} to book over the phone.
+              {error} You can also call us on {site.phonePrimary} to book over
+              the phone.
             </Alert>
           ) : (
             /* useSearchParams needs a Suspense boundary during prerender. */
-            <Suspense fallback={<LoadingBlock label="Loading booking form…" />}>
+            <Suspense
+              fallback={<LoadingBlock label="Loading appointment form…" />}
+            >
               <AppointmentForm doctors={doctors} />
             </Suspense>
           )}

@@ -9,6 +9,7 @@ import Container from "@/components/ui/Container";
 import FeatureCard from "@/components/ui/FeatureCard";
 import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
+import StarRating from "@/components/ui/StarRating";
 import { getDoctors } from "@/lib/api/doctors";
 import { getServices } from "@/lib/api/services";
 
@@ -34,7 +35,7 @@ const STATS = [
   { value: "10,000+", label: "Happy Patients" },
   { value: "25+", label: "Doctors" },
   { value: "5+", label: "Departments" },
-  { value: "4.9★", label: "Patient Rating" },
+  { value: "4.9", suffix: "/5", label: "Patient Rating", rating: 4.9 },
 ];
 
 const WHY_US = [
@@ -129,7 +130,13 @@ export default async function HomePage() {
               key={stat.label}
               className="bg-white px-3 py-5.5 text-center lg:p-7"
             >
-              <h3 className="text-[2rem] text-primary">{stat.value}</h3>
+              <h3 className="text-[2rem] text-primary">
+                {stat.value}
+                {stat.suffix ? (
+                  <span className="text-[0.6em]">{stat.suffix}</span>
+                ) : null}
+              </h3>
+
               <span className="text-[#666]">{stat.label}</span>
             </div>
           ))}

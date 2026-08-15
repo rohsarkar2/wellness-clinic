@@ -83,6 +83,8 @@
   --color-mist: #f5faff;
   --color-line: #e4edf8;
   --color-navy: #10253f;
+  /* Filled rating stars; unfilled ones use `line`. */
+  --color-star: #f5a623;
 
   --font-sans: var(--font-inter), Inter, sans-serif;
   --font-display: var(--font-poppins), Poppins, sans-serif;
