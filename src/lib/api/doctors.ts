@@ -1,15 +1,19 @@
-import { apiRequest, hasBackend } from "@/lib/api/client";
-import { mockGetDoctor, mockGetDoctors } from "@/lib/mock";
+import { ApiError } from "@/lib/api/client";
+import { doctors, findDoctor } from "@/lib/data/doctors";
 import type { Doctor } from "@/lib/types";
 
-export function getDoctors(): Promise<Doctor[]> {
-  if (!hasBackend()) return mockGetDoctors();
-  return apiRequest<Doctor[]>("/doctors", { next: { revalidate: 300 } });
+/**
+ * Doctors are seed data, not database rows — they change with a deploy, and
+ * their photos live in `public/images`. These stay async so the pages that
+ * await them do not need to change if they ever move to Supabase.
+ */
+
+export async function getDoctors(): Promise<Doctor[]> {
+  return doctors;
 }
 
-export function getDoctorById(id: string): Promise<Doctor> {
-  if (!hasBackend()) return mockGetDoctor(id);
-  return apiRequest<Doctor>(`/doctors/${encodeURIComponent(id)}`, {
-    next: { revalidate: 300 },
-  });
+export async function getDoctorById(id: string): Promise<Doctor> {
+  const doctor = findDoctor(id);
+  if (!doctor) throw new ApiError("Doctor not found.", 404);
+  return doctor;
 }

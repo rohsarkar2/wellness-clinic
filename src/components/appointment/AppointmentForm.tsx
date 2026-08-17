@@ -18,11 +18,10 @@ import {
 import { Spinner } from "@/components/ui/Loading";
 import { createAppointment, getAvailability } from "@/lib/api/appointments";
 import { toErrorMessage } from "@/lib/api/client";
+import { BOOKING_WINDOW_DAYS } from "@/lib/booking";
 import type { AppointmentPayload, Doctor, TimeSlot } from "@/lib/types";
 import { addDays, today } from "@/lib/utils/date";
 import { hasErrors, validateAppointment, type Errors } from "@/lib/validation";
-
-const MAX_ADVANCE_DAYS = 60;
 
 const EMPTY: AppointmentPayload = {
   doctorId: "",
@@ -190,7 +189,7 @@ export default function AppointmentForm({ doctors }: { doctors: Doctor[] }) {
             icon="fa-solid fa-calendar-day"
             error={errors.date}
             min={today()}
-            max={addDays(MAX_ADVANCE_DAYS)}
+            max={addDays(BOOKING_WINDOW_DAYS)}
             value={values.date}
             onChange={(value) => setField("date", value)}
           />

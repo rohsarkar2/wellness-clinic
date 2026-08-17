@@ -1,8 +1,7 @@
-import { apiRequest, hasBackend } from "@/lib/api/client";
-import { mockGetServices } from "@/lib/mock";
+import { services } from "@/lib/data/services";
 import type { Service } from "@/lib/types";
 
-export function getServices(): Promise<Service[]> {
-  if (!hasBackend()) return mockGetServices();
-  return apiRequest<Service[]>("/services", { next: { revalidate: 3600 } });
+/** Seed data, like doctors — see the note in `src/lib/api/doctors.ts`. */
+export async function getServices(): Promise<Service[]> {
+  return services;
 }

@@ -12,10 +12,14 @@ export function isValidEmail(value: string): boolean {
 }
 
 export function isValidPhone(value: string): boolean {
-  return PHONE_RE.test(value.replace(/[\s-]/g, ""));
+  // Separators are a typing habit, not a mistake — "(+91) 78965-41230" is the
+  // same number. Strip them all and judge the digits.
+  return PHONE_RE.test(value.replace(/[\s\-().]/g, ""));
 }
 
-export function validateAppointment(values: AppointmentPayload): Errors<AppointmentPayload> {
+export function validateAppointment(
+  values: AppointmentPayload,
+): Errors<AppointmentPayload> {
   const errors: Errors<AppointmentPayload> = {};
 
   if (!values.doctorId) errors.doctorId = "Please select a doctor.";
@@ -44,7 +48,7 @@ export function validateAppointment(values: AppointmentPayload): Errors<Appointm
   if (!values.phone.trim()) {
     errors.phone = "Please enter your phone number.";
   } else if (!isValidPhone(values.phone)) {
-    errors.phone = "Please enter a valid 10-digit phone number.";
+    errors.phone = "Please enter a valid 10-digit number.";
   }
 
   if (values.reason.trim().length > 500) {
@@ -54,7 +58,9 @@ export function validateAppointment(values: AppointmentPayload): Errors<Appointm
   return errors;
 }
 
-export function validateContact(values: ContactPayload): Errors<ContactPayload> {
+export function validateContact(
+  values: ContactPayload,
+): Errors<ContactPayload> {
   const errors: Errors<ContactPayload> = {};
 
   const name = values.name.trim();
@@ -67,7 +73,7 @@ export function validateContact(values: ContactPayload): Errors<ContactPayload> 
   if (!values.phone.trim()) {
     errors.phone = "Please enter your phone number.";
   } else if (!isValidPhone(values.phone)) {
-    errors.phone = "Please enter a valid 10-digit phone number.";
+    errors.phone = "Please enter a valid phone number.";
   }
 
   // Email is optional on the enquiry form, but must be valid when supplied.
