@@ -64,3 +64,8 @@ export interface ContactPayload {
   department: string;
   message: string;
 }
+
+export interface Enquiry extends ContactPayload {
+  id: string;
+  createdAt: string;
+}

@@ -29,7 +29,7 @@ export const site = {
     "Wellness Health Point — compassionate healthcare with experienced doctors, modern diagnostics and patient-focused treatment.",
   phonePrimary: "+91 6291664625",
   phoneSecondary: "+91 9836406226",
-  email: "info@wellnesshealthpoint.com",
+  email: "thewellnesshealthpoint@gmail.com",
   address: "Pansila, Khardah",
   hours: "Mon–Sat: 9 AM – 8 PM",
   hoursNote: "Sunday: Emergency Only",
@@ -47,5 +47,5 @@ export const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/doctors", label: "Doctors" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "/contact", label: "Contact Us" },
 ] as const;
