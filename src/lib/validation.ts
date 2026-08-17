@@ -12,8 +12,6 @@ export function isValidEmail(value: string): boolean {
 }
 
 export function isValidPhone(value: string): boolean {
-  // Separators are a typing habit, not a mistake — "(+91) 78965-41230" is the
-  // same number. Strip them all and judge the digits.
   return PHONE_RE.test(value.replace(/[\s\-().]/g, ""));
 }
 

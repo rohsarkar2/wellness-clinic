@@ -9,11 +9,8 @@ import type { Appointment, Enquiry } from "@/lib/types";
  *
  * Nothing here is patient-facing — the only recipient is the clinic's own
  * inbox, which is the only place a booking or an enquiry would otherwise
- * surface (both tables have RLS on with no policies, so nobody is watching
- * them).
+ * surface.
  *
- * Server-only: SMTP_PASSWORD grants send access to the clinic mailbox and must
- * never reach the browser. Import this from route handlers only.
  */
 
 let cached: Transporter | null = null;
@@ -42,7 +39,6 @@ function readConfig(): SmtpConfig | null {
     port: Number(process.env.SMTP_PORT) || 587,
     user,
     password,
-    // Most providers reject a From that isn't the authenticated mailbox.
     from: process.env.SMTP_FROM || user,
     to: to
       .split(",")
@@ -57,7 +53,6 @@ function transporter(config: SmtpConfig): Transporter {
   cached = nodemailer.createTransport({
     host: config.host,
     port: config.port,
-    // 465 is implicit TLS; 587 opens plaintext and upgrades via STARTTLS.
     secure: config.port === 465,
     auth: { user: config.user, pass: config.password },
   });
@@ -83,7 +78,9 @@ async function sendToClinic(
 ): Promise<boolean> {
   const config = readConfig();
   if (!config) {
-    console.warn(`SMTP is not configured — no clinic notification sent for ${label}.`);
+    console.warn(
+      `SMTP is not configured — no clinic notification sent for ${label}.`,
+    );
     return false;
   }
 
@@ -103,7 +100,9 @@ async function sendToClinic(
 }
 
 /** Emails the clinic a new booking. */
-export function notifyClinicOfAppointment(appointment: Appointment): Promise<boolean> {
+export function notifyClinicOfAppointment(
+  appointment: Appointment,
+): Promise<boolean> {
   return sendToClinic(
     renderAppointmentEmail(appointment),
     appointment.email,
@@ -115,8 +114,6 @@ export function notifyClinicOfAppointment(appointment: Appointment): Promise<boo
 export function notifyClinicOfEnquiry(enquiry: Enquiry): Promise<boolean> {
   return sendToClinic(
     renderEnquiryEmail(enquiry),
-    // The contact form makes email optional; with none given there is nothing
-    // to reply to, and the clinic has to use the phone number in the body.
     enquiry.email || undefined,
     `enquiry ${enquiry.id}`,
   );
@@ -124,7 +121,6 @@ export function notifyClinicOfEnquiry(enquiry: Enquiry): Promise<boolean> {
 
 // ---------------------------------------------------------------------------
 // Messages — exported so they can be previewed without sending.
-// ---------------------------------------------------------------------------
 
 export function renderAppointmentEmail(appointment: Appointment): Message {
   const reason = appointment.reason.trim();
@@ -150,15 +146,21 @@ export function renderAppointmentEmail(appointment: Appointment): Message {
       heading: "New appointment booking",
       preheader: `${appointment.patientName} · ${longDate(appointment.date)} · ${displayTime(appointment.time)}`,
       title: appointment.reference,
-      footnote: "Sent automatically when a patient books through the website. Replying to this email writes to the patient.",
+      footnote:
+        "Sent automatically when a patient books through the website. Replying to this email writes to the patient.",
       content:
-        highlight(
+        hero(
           formatDate(appointment.date, "EEEE, d MMMM yyyy"),
           `${displayTime(appointment.time)} &nbsp;·&nbsp; ${escapeHtml(appointment.doctorName)}`,
         ) +
-        contactSection("Patient", appointment.patientName, appointment.email, appointment.phone) +
-        proseSection("Reason for visit", reason) +
-        footerRow("Reference", appointment.reference),
+        contact(
+          "Patient",
+          appointment.patientName,
+          appointment.email,
+          appointment.phone,
+        ) +
+        prose("Reason for visit", reason) +
+        closing("Reference", appointment.reference, true),
     }),
   };
 }
@@ -191,10 +193,13 @@ export function renderEnquiryEmail(enquiry: Enquiry): Message {
         ? "Sent automatically when the contact form is submitted. Replying to this email writes to the enquirer."
         : "Sent automatically when the contact form is submitted. No email address was given, so this message cannot be replied to — call the number above.",
       content:
-        highlight(enquiry.department, `Received ${escapeHtml(receivedAt(enquiry.createdAt))}`) +
-        contactSection("Enquirer", enquiry.name, enquiry.email, enquiry.phone) +
-        proseSection("Message", message) +
-        footerRow("Callback requested", enquiry.phone),
+        hero(
+          enquiry.department,
+          `Received ${escapeHtml(receivedAt(enquiry.createdAt))}`,
+        ) +
+        contact("Enquirer", enquiry.name, enquiry.email, enquiry.phone) +
+        prose("Message", message) +
+        closing("Callback requested", enquiry.phone, false),
     }),
   };
 }
@@ -203,32 +208,46 @@ export function renderEnquiryEmail(enquiry: Enquiry): Message {
 // Shared HTML
 // ---------------------------------------------------------------------------
 
-// Palette from src/app/globals.css, so the notification looks like the site.
-const NAVY = "#10253f";
+// Palette from src/app/globals.css. Navy frames the message — the page behind
+// the card, the masthead, the footer strip — and the details sit on a soft
+// tinted sheet between them. No white surfaces, no stacked panels.
+const CANVAS = "#0a1a2f"; // page behind the card
+const NAVY = "#10253f"; // masthead and footer strip
 const PRIMARY = "#0a6ebd";
+const SHEET = "#e4ecf6"; // the tinted body
+const RULE = "#cbd8e8"; // hairline dividers on the sheet
 const INK = "#1f2d3d";
 const BODY = "#566573";
-const MUTED = "#9aa5b1";
-const MIST = "#f5faff";
-const LINE = "#e4edf8";
+const MUTED = "#8794a3";
+const ON_NAVY = "#f2f7fc"; // heading on the masthead
+const ON_NAVY_SOFT = "#8fb6dc"; // brand line and footnote
 
 // Inlined on every element: <style> blocks are unreliable across clients, and
 // Outlook ignores flex and grid entirely — hence the nested tables below.
-const FONT = "'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif";
+const FONT =
+  "'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif";
+const MONO = "'SFMono-Regular',Menlo,Consolas,'Courier New',monospace";
 
 interface Shell {
   /** Browser/window title — never rendered in the message body. */
   title: string;
-  /** Headline in the navy bar. */
+  /** Headline in the navy masthead. */
   heading: string;
   /** Hidden line the inbox list shows instead of the first words of the body. */
   preheader: string;
-  /** Grey note under the card. */
+  /** Small note in the navy strip at the foot of the card. */
   footnote: string;
+  /** Body rows, each produced by one of the builders below. */
   content: string;
 }
 
-function shell({ title, heading, preheader, footnote, content }: Shell): string {
+function shell({
+  title,
+  heading,
+  preheader,
+  footnote,
+  content,
+}: Shell): string {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -239,25 +258,29 @@ function shell({ title, heading, preheader, footnote, content }: Shell): string 
 <meta name="supported-color-schemes" content="light only">
 <title>${escapeHtml(title)}</title>
 </head>
-<body style="margin:0;padding:0;background:${MIST};">
+<body style="margin:0;padding:0;background:${CANVAS};">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(preheader)}</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${MIST};">
-<tr><td align="center" style="padding:24px 12px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${CANVAS};">
+<tr><td align="center" style="padding:28px 14px;">
 
-<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(16,37,63,0.08);">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:${SHEET};border-radius:16px;overflow:hidden;">
 
-  <tr><td style="background:${NAVY};padding:28px 32px;">
-    <p style="margin:0 0 6px;font-family:${FONT};font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8fb6dc;">${escapeHtml(site.name)}</p>
-    <h1 style="margin:0;font-family:${FONT};font-size:22px;line-height:1.3;font-weight:600;color:#ffffff;">${escapeHtml(heading)}</h1>
+  <tr><td style="background:${NAVY};padding:26px 28px 24px;font-family:${FONT};">
+    <p style="margin:0 0 6px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:${ON_NAVY_SOFT};">${escapeHtml(site.name)}</p>
+    <h1 style="margin:0;font-size:21px;line-height:1.3;font-weight:600;color:${ON_NAVY};">${escapeHtml(heading)}</h1>
   </td></tr>
 
-  ${content}
+  <tr><td style="background:${SHEET};padding:24px 28px 4px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      ${content}
+    </table>
+  </td></tr>
+
+  <tr><td style="background:${NAVY};padding:16px 28px;">
+    <p style="margin:0;font-family:${FONT};font-size:11.5px;line-height:1.6;color:${ON_NAVY_SOFT};">${escapeHtml(footnote)}</p>
+  </td></tr>
 
 </table>
-
-<p style="margin:20px 0 0;font-family:${FONT};font-size:12px;line-height:1.6;color:${MUTED};max-width:600px;">
-  ${escapeHtml(footnote)}
-</p>
 
 </td></tr>
 </table>
@@ -265,53 +288,82 @@ function shell({ title, heading, preheader, footnote, content }: Shell): string 
 </html>`;
 }
 
-/** The mist panel under the header. `sub` is pre-escaped — it carries markup. */
-function highlight(main: string, sub: string): string {
-  return `<tr><td style="padding:32px 32px 8px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${MIST};border-left:3px solid ${PRIMARY};border-radius:0 12px 12px 0;">
-      <tr><td style="padding:20px 24px;font-family:${FONT};">
-        <p style="margin:0 0 4px;font-size:19px;font-weight:600;color:${INK};">${escapeHtml(main)}</p>
-        <p style="margin:0;font-size:15px;color:${BODY};">${sub}</p>
-      </td></tr>
-    </table>
+/** Opening line — what the clinic reads first. `sub` carries markup. */
+function hero(main: string, sub: string): string {
+  return `<tr><td style="padding:0 0 20px;font-family:${FONT};">
+    <p style="margin:0 0 4px;font-size:19px;line-height:1.3;font-weight:600;color:${INK};">${escapeHtml(main)}</p>
+    <p style="margin:0;font-size:14.5px;color:${BODY};">${sub}</p>
   </td></tr>`;
 }
 
-function contactSection(label: string, name: string, email: string, phone: string): string {
-  const rows = [phoneLink(phone), email ? mailLink(email) : null]
-    .filter(Boolean)
-    .map((cell) => `<tr><td style="padding:2px 0;">${cell}</td></tr>`)
-    .join("");
-
-  return `<tr><td style="padding:24px 32px 0;">
-    ${sectionLabel(label)}
-    <p style="margin:0 0 10px;font-family:${FONT};font-size:17px;font-weight:600;color:${INK};">${escapeHtml(name)}</p>
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:${FONT};font-size:14px;">${rows}</table>
-  </td></tr>`;
+/** Who to contact, as a label/value grid so the number is easy to scan to. */
+function contact(
+  label: string,
+  name: string,
+  email: string,
+  phone: string,
+): string {
+  return block(
+    label,
+    `<p style="margin:0 0 12px;font-family:${FONT};font-size:17px;font-weight:600;color:${INK};">${escapeHtml(name)}</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      ${detailRow("Phone", phoneLink(phone))}
+      ${detailRow("Email", email ? mailLink(email) : notGiven())}
+    </table>`,
+  );
 }
 
 /** Free text the patient typed — may be empty, and is never trusted as markup. */
-function proseSection(label: string, text: string): string {
-  return `<tr><td style="padding:24px 32px 0;">
-    <div style="border-top:1px solid ${LINE};padding-top:24px;">
+function prose(label: string, text: string): string {
+  return block(
+    label,
+    `<p style="margin:0;font-family:${FONT};font-size:15px;line-height:1.6;color:${text ? BODY : MUTED};">${text ? escapeHtml(text) : "Not given"}</p>`,
+  );
+}
+
+/**
+ * Closing line — the single value the clinic acts on. `mono` sets a booking
+ * reference in monospace so its characters can't be misread.
+ */
+function closing(label: string, value: string, mono: boolean): string {
+  return block(
+    label,
+    `<p style="margin:0;font-family:${mono ? MONO : FONT};font-size:17px;font-weight:600;letter-spacing:${mono ? "1.5px" : "0.3px"};color:${INK};">${escapeHtml(value)}</p>`,
+  );
+}
+
+/** A labelled section, divided from the one above it by a hairline. */
+function block(label: string, inner: string): string {
+  return `<tr><td style="padding:0 0 20px;">
+    <div style="border-top:1px solid ${RULE};padding-top:18px;">
       ${sectionLabel(label)}
-      <p style="margin:0;font-family:${FONT};font-size:15px;line-height:1.6;color:${text ? BODY : MUTED};">${text ? escapeHtml(text) : "Not given"}</p>
+      ${inner}
     </div>
   </td></tr>`;
 }
 
-function footerRow(label: string, value: string): string {
-  return `<tr><td style="padding:28px 32px 32px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid ${LINE};">
-      <tr><td style="padding-top:20px;font-family:${FONT};font-size:13px;color:${MUTED};">
-        ${escapeHtml(label)} <span style="color:${INK};font-weight:600;">${escapeHtml(value)}</span>
-      </td></tr>
-    </table>
-  </td></tr>`;
+/**
+ * One label/value line. Both cells share a fixed 22px line box and identical
+ * padding — the label is far smaller than the value, so anything relative
+ * leaves the two sitting at different heights.
+ *
+ * `value` is pre-escaped — it carries a link.
+ */
+function detailRow(label: string, value: string): string {
+  const cell = `padding:3px 0;font-family:${FONT};line-height:22px;`;
+
+  return `<tr>
+    <td width="70" valign="top" style="width:70px;${cell}font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:${MUTED};">${escapeHtml(label)}</td>
+    <td valign="top" style="${cell}font-size:14.5px;color:${BODY};">${value}</td>
+  </tr>`;
+}
+
+function notGiven(): string {
+  return `<span style="color:${MUTED};">Not given</span>`;
 }
 
 function sectionLabel(label: string): string {
-  return `<p style="margin:0 0 8px;font-family:${FONT};font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:${MUTED};">${escapeHtml(label)}</p>`;
+  return `<p style="margin:0 0 8px;font-family:${FONT};font-size:10px;letter-spacing:2px;text-transform:uppercase;color:${MUTED};">${escapeHtml(label)}</p>`;
 }
 
 function mailLink(email: string): string {
