@@ -34,6 +34,9 @@ export const site = {
   hours: "Mon–Sat: 9 AM – 8 PM",
   hoursNote: "Sunday: Emergency Only",
   whatsapp: "916291664625",
+  /** Social profiles — set to "" to hide the icon in the footer. */
+  instagram: "https://www.instagram.com/wellnesshealthpoint/?hl=en",
+  facebook: "",
   mapEmbed:
     "https://www.google.com/maps?q=The+Wellness+Health+Point&output=embed",
 } as const;

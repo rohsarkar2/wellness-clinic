@@ -5,6 +5,14 @@ import { navLinks, site } from "@/lib/site";
 
 const HEADING = "mb-[18px] font-display font-semibold text-white";
 
+const SOCIAL_BUTTON =
+  "flex size-10 items-center justify-center rounded-full border border-white/20 text-[18px] text-white transition duration-300 hover:-translate-y-0.5 hover:border-white/40 hover:bg-white/10";
+
+const socials = [
+  { href: site.instagram, label: "Follow us on Instagram", icon: "fa-instagram" },
+  { href: site.facebook, label: "Follow us on Facebook", icon: "fa-facebook-f" },
+].filter((social) => social.href);
+
 export default function Footer() {
   return (
     <footer className="bg-navy pt-13.75 pb-5 text-[#d9e2ef] md:pt-22.5">
@@ -12,6 +20,23 @@ export default function Footer() {
         <div>
           <h3 className={HEADING}>{site.name}</h3>
           <p>Compassionate healthcare with modern technology.</p>
+
+          {socials.length > 0 && (
+            <div className="mt-4.5 flex justify-center gap-3 md:justify-start">
+              {socials.map((social) => (
+                <a
+                  key={social.icon}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={SOCIAL_BUTTON}
+                  aria-label={social.label}
+                >
+                  <i className={`fa-brands ${social.icon}`} aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
 
         <div>
