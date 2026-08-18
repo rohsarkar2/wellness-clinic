@@ -41,7 +41,7 @@ export async function generateMetadata(
     const doctor = await getDoctorById(id);
     return pageMetadata({
       title: doctor.name,
-      description: `${doctor.name} — ${doctor.speciality} at ${site.name}. ${doctor.experienceYears} years of experience. ${doctor.qualifications.join(", ")}. Book a consultation online.`,
+      description: `${doctor.name} — ${doctor.speciality} at ${site.name}. Book a consultation online.`,
       path: `/doctors/${doctor.id}`,
       image: {
         ...doctorOgImage(doctor.image),
@@ -57,8 +57,6 @@ export async function generateMetadata(
 
 const SUBHEADING =
   "mt-6.5 mb-3 font-display text-[1.2rem] font-semibold text-ink";
-const PILL =
-  "rounded-full bg-mist px-4 py-1.75 text-[0.9rem] font-semibold text-primary";
 
 export default async function DoctorDetailPage(
   props: PageProps<"/doctors/[id]">,
@@ -66,23 +64,23 @@ export default async function DoctorDetailPage(
   const { id } = await props.params;
   const doctor = await loadDoctor(id);
 
-  const meta = [
-    {
-      icon: "fa-solid fa-briefcase-medical",
-      value: `${doctor.experienceYears} years`,
-      label: "Experience",
-    },
-    {
-      icon: "fa-solid fa-hospital",
-      value: doctor.department,
-      label: "Department",
-    },
-    {
-      icon: "fa-solid fa-indian-rupee-sign",
-      value: `₹${doctor.consultationFee}`,
-      label: "Consultation",
-    },
-  ];
+  // const meta = [
+  //   {
+  //     icon: "fa-solid fa-briefcase-medical",
+  //     value: `${doctor.experienceYears} years`,
+  //     label: "Experience",
+  //   },
+  //   {
+  //     icon: "fa-solid fa-hospital",
+  //     value: doctor.department,
+  //     label: "Department",
+  //   },
+  //   {
+  //     icon: "fa-solid fa-indian-rupee-sign",
+  //     value: `₹${doctor.consultationFee}`,
+  //     label: "Consultation",
+  //   },
+  // ];
 
   return (
     <Section>
@@ -116,13 +114,13 @@ export default async function DoctorDetailPage(
               priority
               className="mb-5 aspect-square w-full rounded-card object-cover"
             />
-            <ButtonLink
+            {/* <ButtonLink
               href={`/appointment?doctor=${doctor.id}`}
               className="mx-auto"
             >
               <i className="fa-solid fa-calendar-check" aria-hidden="true" />
               Book Appointment
-            </ButtonLink>
+            </ButtonLink> */}
           </Reveal>
 
           <Reveal delay={0.1} onMount>
@@ -133,7 +131,7 @@ export default async function DoctorDetailPage(
               {doctor.speciality}
             </p>
 
-            <div className="my-6 grid gap-4.5 border-y border-[#eef2f7] py-5 sm:grid-cols-3 md:flex md:flex-wrap md:gap-7.5">
+            {/* <div className="my-6 grid gap-4.5 border-y border-[#eef2f7] py-5 sm:grid-cols-3 md:flex md:flex-wrap md:gap-7.5">
               {meta.map((item) => (
                 <div
                   key={item.label}
@@ -149,32 +147,10 @@ export default async function DoctorDetailPage(
                   </span>
                 </div>
               ))}
-            </div>
+            </div> */}
 
             <h3 className={SUBHEADING}>About</h3>
             <p>{doctor.description}</p>
-
-            <h3 className={SUBHEADING}>Qualifications</h3>
-            <ul className="flex flex-wrap gap-2.5">
-              {doctor.qualifications.map((qualification) => (
-                <li key={qualification} className={PILL}>
-                  {qualification}
-                </li>
-              ))}
-            </ul>
-
-            {doctor.availableDays.length > 0 && (
-              <>
-                <h3 className={SUBHEADING}>Available Days</h3>
-                <ul className="flex flex-wrap gap-2.5">
-                  {doctor.availableDays.map((day) => (
-                    <li key={day} className={PILL}>
-                      {day}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
             {/* <h3 className={SUBHEADING}>Languages</h3>
             <ul className="flex flex-wrap gap-2.5">
               {doctor.languages.map((language) => (

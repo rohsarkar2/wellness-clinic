@@ -1,17 +1,14 @@
-import { format, parseISO } from "date-fns";
 import nodemailer, { type Transporter } from "nodemailer";
 
 import { LOGO_CID, LOGO_FILENAME, LOGO_PNG } from "@/lib/server/logo";
 import { site } from "@/lib/site";
-import type { Appointment, Enquiry } from "@/lib/types";
+import type { Submission } from "@/lib/types";
 
 /**
  * Clinic notification email.
  *
  * Nothing here is patient-facing — the only recipient is the clinic's own
- * inbox, which is the only place a booking or an enquiry would otherwise
- * surface.
- *
+ * inbox, which is the only place a form submission would otherwise surface.
  */
 
 let cached: Transporter | null = null;
@@ -32,7 +29,7 @@ function readConfig(): SmtpConfig | null {
   const to = process.env.CLINIC_NOTIFICATION_EMAIL;
 
   // Missing config is not an error: local development and preview builds should
-  // still take bookings. The caller logs the skip.
+  // still accept submissions. The caller logs the skip.
   if (!host || !user || !password || !to) return null;
 
   return {
@@ -117,107 +114,61 @@ async function sendToClinic(
   }
 }
 
-/** Emails the clinic a new booking. */
-export function notifyClinicOfAppointment(
-  appointment: Appointment,
-): Promise<boolean> {
+/** Emails the clinic a new submission, from either form. */
+export function notifyClinic(submission: Submission): Promise<boolean> {
   return sendToClinic(
-    renderAppointmentEmail(appointment),
-    appointment.email,
-    appointment.reference,
-  );
-}
-
-/** Emails the clinic a new callback enquiry. */
-export function notifyClinicOfEnquiry(enquiry: Enquiry): Promise<boolean> {
-  return sendToClinic(
-    renderEnquiryEmail(enquiry),
-    enquiry.email || undefined,
-    `enquiry ${enquiry.id}`,
+    renderSubmissionEmail(submission),
+    submission.email || undefined,
+    `submission ${submission.id}`,
   );
 }
 
 // ---------------------------------------------------------------------------
-// Messages — exported so they can be previewed without sending.
+// Message — exported so it can be previewed without sending.
 
-export function renderAppointmentEmail(appointment: Appointment): Message {
-  const reason = appointment.reason.trim();
+/**
+ * The one notification both forms produce.
+ *
+ * A submission carries a doctor only when it came from the appointment form,
+ * and that single fact is the only thing that varies here: it adds the doctor
+ * line and turns the wording from "enquiry" into "appointment request".
+ * Everything else — the details, the message, the callback number — is the
+ * same either way, which is why there is one template rather than two.
+ */
+export function renderSubmissionEmail(submission: Submission): Message {
+  const { doctor, department, name, email, phone } = submission;
+  const reason = submission.reason.trim();
+  const kind = doctor ? "appointment request" : "enquiry";
+  const received = receivedAt(submission.createdAt);
 
   return {
-    subject: `New booking ${appointment.reference} — ${appointment.patientName}, ${longDate(appointment.date)} ${displayTime(appointment.time)}`,
+    subject: `New ${kind} — ${name}, ${doctor ?? department}`,
     text: [
-      `New appointment booking — ${site.name}`,
+      `New ${kind} — ${site.name}`,
       "",
-      `${formatDate(appointment.date, "EEEE, d MMMM yyyy")} at ${displayTime(appointment.time)}`,
-      `With ${appointment.doctorName}`,
+      `Department: ${department}`,
+      ...(doctor ? [`Doctor:     ${doctor}`] : []),
+      `Received:   ${received}`,
       "",
-      `Patient:   ${appointment.patientName}`,
-      `Email:     ${appointment.email}`,
-      `Phone:     ${appointment.phone}`,
-      `Reason:    ${reason || "Not given"}`,
+      `Name:       ${name}`,
+      `Phone:      ${phone}`,
+      `Email:      ${email || "Not given"}`,
+      `Reason:     ${reason || "Not given"}`,
       "",
-      `Reference: ${appointment.reference}`,
-      "",
-      "Reply to this email to write to the patient directly.",
+      "Reply to this email to write to them directly.",
     ].join("\n"),
     html: shell({
-      heading: "New appointment booking",
-      preheader: `${appointment.patientName} · ${longDate(appointment.date)} · ${displayTime(appointment.time)}`,
-      title: appointment.reference,
+      heading: `New ${kind}`,
+      preheader: `${name} · ${doctor ?? department}`,
+      title: `${kind === "enquiry" ? "Enquiry" : "Appointment request"} — ${name}`,
       footnote:
-        "Sent automatically when a patient books through the website. Replying to this email writes to the patient.",
+        "Sent automatically when a form is submitted on the website. Replying to this email writes to the sender.",
       content:
-        hero(
-          formatDate(appointment.date, "EEEE, d MMMM yyyy"),
-          `${displayTime(appointment.time)} &nbsp;·&nbsp; ${escapeHtml(appointment.doctorName)}`,
-        ) +
-        contact(
-          "Patient",
-          appointment.patientName,
-          appointment.email,
-          appointment.phone,
-        ) +
-        prose("Reason for visit", reason) +
-        closing("Reference", appointment.reference, true),
-    }),
-  };
-}
-
-export function renderEnquiryEmail(enquiry: Enquiry): Message {
-  const message = enquiry.message.trim();
-
-  return {
-    subject: `New enquiry — ${enquiry.name}, ${enquiry.department}`,
-    text: [
-      `New callback enquiry — ${site.name}`,
-      "",
-      `Department: ${enquiry.department}`,
-      `Received:   ${receivedAt(enquiry.createdAt)}`,
-      "",
-      `Name:       ${enquiry.name}`,
-      `Phone:      ${enquiry.phone}`,
-      `Email:      ${enquiry.email || "Not given"}`,
-      `Message:    ${message || "Not given"}`,
-      "",
-      enquiry.email
-        ? "Reply to this email to write to them directly."
-        : "No email address was given — call the number above.",
-    ].join("\n"),
-    html: shell({
-      heading: "New callback enquiry",
-      preheader: `${enquiry.name} · ${enquiry.department}`,
-      title: `Enquiry — ${enquiry.name}`,
-      footnote: enquiry.email
-        ? "Sent automatically when the contact form is submitted. Replying to this email writes to the enquirer."
-        : "Sent automatically when the contact form is submitted. No email address was given, so this message cannot be replied to — call the number above.",
-      content:
-        hero(
-          enquiry.department,
-          `Received ${escapeHtml(receivedAt(enquiry.createdAt))}`,
-        ) +
-        contact("Enquirer", enquiry.name, enquiry.email, enquiry.phone) +
-        prose("Message", message) +
-        closing("Callback requested", enquiry.phone, false),
+        hero(department, `Received ${escapeHtml(received)}`) +
+        (doctor ? highlight("Doctor requested", doctor) : "") +
+        contact("From", name, email, phone) +
+        prose("Reason", reason) +
+        highlight("Callback requested", phone),
     }),
   };
 }
@@ -244,7 +195,6 @@ const ON_NAVY_SOFT = "#8fb6dc"; // brand line and footnote
 // Outlook ignores flex and grid entirely — hence the nested tables below.
 const FONT =
   "'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif";
-const MONO = "'SFMono-Regular',Menlo,Consolas,'Courier New',monospace";
 
 interface Shell {
   /** Browser/window title — never rendered in the message body. */
@@ -346,14 +296,11 @@ function prose(label: string, text: string): string {
   );
 }
 
-/**
- * Closing line — the single value the clinic acts on. `mono` sets a booking
- * reference in monospace so its characters can't be misread.
- */
-function closing(label: string, value: string, mono: boolean): string {
+/** A single value the clinic acts on, set larger than the rows around it. */
+function highlight(label: string, value: string): string {
   return block(
     label,
-    `<p style="margin:0;font-family:${mono ? MONO : FONT};font-size:17px;font-weight:600;letter-spacing:${mono ? "1.5px" : "0.3px"};color:${INK};">${escapeHtml(value)}</p>`,
+    `<p style="margin:0;font-family:${FONT};font-size:17px;font-weight:600;letter-spacing:0.3px;color:${INK};">${escapeHtml(value)}</p>`,
   );
 }
 
@@ -405,29 +352,6 @@ function phoneLink(phone: string): string {
 // ---------------------------------------------------------------------------
 // Formatting
 // ---------------------------------------------------------------------------
-
-/** "Thu 20 Aug 2026"; falls back to the raw value if the date is unparseable. */
-function longDate(date: string): string {
-  return formatDate(date, "EEE d MMM yyyy");
-}
-
-function formatDate(date: string, pattern: string): string {
-  try {
-    return format(parseISO(date), pattern);
-  } catch {
-    return date;
-  }
-}
-
-/** "09:00" → "9:00 AM". Slot times are stored 24h; the clinic reads 12h. */
-function displayTime(time: string): string {
-  const match = /^(\d{1,2}):(\d{2})$/.exec(time);
-  if (!match) return time;
-
-  const hours = Number(match[1]);
-  const suffix = hours < 12 ? "AM" : "PM";
-  return `${hours % 12 || 12}:${match[2]} ${suffix}`;
-}
 
 /**
  * Postgres stamps created_at in UTC and the server runs in UTC too, so this is

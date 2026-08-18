@@ -9,25 +9,21 @@ import FormCard, {
 import Alert from "@/components/ui/Alert";
 import { InputField, SelectField, TextareaField } from "@/components/ui/Field";
 import { Spinner } from "@/components/ui/Loading";
-import { sendContactEnquiry } from "@/lib/api/appointments";
 import { toErrorMessage } from "@/lib/api/client";
+import { sendSubmission } from "@/lib/api/submissions";
 import { departments } from "@/lib/data/services";
-import type { ContactPayload } from "@/lib/types";
-import { hasErrors, validateContact, type Errors } from "@/lib/validation";
+import type { SubmissionPayload } from "@/lib/types";
+import { hasErrors, validateSubmission, type Errors } from "@/lib/validation";
 
-/**
- * How long a submit result stays on screen. The card sits above the fold on
- * the landing page, so a result left up indefinitely reads as the state of a
- * fresh form rather than the outcome of the last one.
- */
 const STATUS_TIMEOUT_MS = 4000;
 
-const EMPTY: ContactPayload = {
+const EMPTY: SubmissionPayload = {
   name: "",
   email: "",
   phone: "",
   department: "",
-  message: "",
+  doctorId: "",
+  reason: "",
 };
 
 interface EnquiryFormProps {
@@ -37,25 +33,19 @@ interface EnquiryFormProps {
   wide?: boolean;
 }
 
-/**
- * The quick "we'll call you back" enquiry card from the original design.
- * Full slot-based booking lives on /appointment.
- */
 export default function EnquiryForm({
   title = "Book an Appointment",
   subtitle = "Fill in your details and we'll contact you shortly.",
   wide = false,
 }: EnquiryFormProps) {
-  const [values, setValues] = useState<ContactPayload>(EMPTY);
-  const [errors, setErrors] = useState<Errors<ContactPayload>>({});
+  const [values, setValues] = useState<SubmissionPayload>(EMPTY);
+  const [errors, setErrors] = useState<Errors<SubmissionPayload>>({});
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<{
     type: "success" | "error";
     message: string;
   }>();
 
-  // Keyed on the status object, which is replaced on every submit, so a second
-  // attempt restarts the countdown instead of inheriting the first one's.
   useEffect(() => {
     if (!status) return;
 
@@ -63,9 +53,9 @@ export default function EnquiryForm({
     return () => clearTimeout(timer);
   }, [status]);
 
-  function setField<K extends keyof ContactPayload>(
+  function setField<K extends keyof SubmissionPayload>(
     key: K,
-    value: ContactPayload[K],
+    value: SubmissionPayload[K],
   ) {
     setValues((current) => ({ ...current, [key]: value }));
     setErrors((current) => ({ ...current, [key]: undefined }));
@@ -75,13 +65,13 @@ export default function EnquiryForm({
     event.preventDefault();
     setStatus(undefined);
 
-    const nextErrors = validateContact(values);
+    const nextErrors = validateSubmission(values);
     setErrors(nextErrors);
     if (hasErrors(nextErrors)) return;
 
     setSubmitting(true);
     try {
-      const response = await sendContactEnquiry(values);
+      const response = await sendSubmission(values);
       setStatus({ type: "success", message: response.message });
       setValues(EMPTY);
     } catch (error) {
@@ -134,7 +124,7 @@ export default function EnquiryForm({
             type="email"
             label="Email Address"
             icon="fa-solid fa-envelope"
-            placeholder="Enter your email (optional)"
+            placeholder="Enter your email"
             autoComplete="email"
             error={errors.email}
             value={values.email}
@@ -157,15 +147,15 @@ export default function EnquiryForm({
         </FormRow>
 
         <TextareaField
-          id="enquiry-message"
-          name="message"
+          id="enquiry-reason"
+          name="reason"
           label="Message"
           icon="fa-solid fa-comment-medical"
           placeholder="Tell us how we can help…"
           maxLength={500}
-          error={errors.message}
-          value={values.message}
-          onChange={(event) => setField("message", event.target.value)}
+          error={errors.reason}
+          value={values.reason}
+          onChange={(event) => setField("reason", event.target.value)}
         />
 
         <button type="submit" disabled={submitting} className={SUBMIT_BUTTON}>
