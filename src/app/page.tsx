@@ -78,7 +78,7 @@ export default async function HomePage() {
       <Hero className="lg:min-h-212.5">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 -left-20 z-1 hidden items-center select-none lg:flex lg:left-40 lg:-top-30"
+          className="pointer-events-none absolute inset-y-0 -left-20 z-1 hidden items-center select-none lg:flex lg:left-30 lg:-top-30"
         >
           <Image
             src="/images/logo-mark.png"

@@ -64,42 +64,9 @@ export default async function DoctorDetailPage(
   const { id } = await props.params;
   const doctor = await loadDoctor(id);
 
-  // const meta = [
-  //   {
-  //     icon: "fa-solid fa-briefcase-medical",
-  //     value: `${doctor.experienceYears} years`,
-  //     label: "Experience",
-  //   },
-  //   {
-  //     icon: "fa-solid fa-hospital",
-  //     value: doctor.department,
-  //     label: "Department",
-  //   },
-  //   {
-  //     icon: "fa-solid fa-indian-rupee-sign",
-  //     value: `₹${doctor.consultationFee}`,
-  //     label: "Consultation",
-  //   },
-  // ];
-
   return (
     <Section>
       <Container>
-        {/* <nav
-          aria-label="Breadcrumb"
-          className="mb-4.5 flex flex-wrap items-center gap-2 text-[0.9rem] text-[#93a1b0] md:mb-6"
-        >
-          <Link href="/" className="hover:text-primary">
-            Home
-          </Link>
-          <span aria-hidden="true">/</span>
-          <Link href="/doctors" className="hover:text-primary">
-            Doctors
-          </Link>
-          <span aria-hidden="true">/</span>
-          <span>{doctor.name}</span>
-        </nav> */}
-
         <div className="grid items-start gap-7.5 lg:grid-cols-[320px_1fr] lg:gap-12.5">
           <Reveal
             className="mx-auto max-w-80 rounded-card bg-white p-6 text-center shadow-card lg:mx-0 lg:max-w-none"
@@ -114,13 +81,6 @@ export default async function DoctorDetailPage(
               priority
               className="mb-5 aspect-square w-full rounded-card object-cover"
             />
-            {/* <ButtonLink
-              href={`/appointment?doctor=${doctor.id}`}
-              className="mx-auto"
-            >
-              <i className="fa-solid fa-calendar-check" aria-hidden="true" />
-              Book Appointment
-            </ButtonLink> */}
           </Reveal>
 
           <Reveal delay={0.1} onMount>
@@ -131,34 +91,8 @@ export default async function DoctorDetailPage(
               {doctor.speciality}
             </p>
 
-            {/* <div className="my-6 grid gap-4.5 border-y border-[#eef2f7] py-5 sm:grid-cols-3 md:flex md:flex-wrap md:gap-7.5">
-              {meta.map((item) => (
-                <div
-                  key={item.label}
-                  className="flex items-center gap-2.5 border-b border-[#eef2f7] pb-4 last:border-b-0 last:pb-0 sm:border-b-0 sm:pb-0 md:border-r-2 md:border-[#eef2f7ce] md:pr-10 md:last:border-r-0"
-                >
-                  <i
-                    className={`text-[1.3rem]  text-primary ${item.icon}`}
-                    aria-hidden="true"
-                  />
-                  <span>
-                    <strong className="block text-ink">{item.value}</strong>
-                    {item.label}
-                  </span>
-                </div>
-              ))}
-            </div> */}
-
             <h3 className={SUBHEADING}>About</h3>
             <p>{doctor.description}</p>
-            {/* <h3 className={SUBHEADING}>Languages</h3>
-            <ul className="flex flex-wrap gap-2.5">
-              {doctor.languages.map((language) => (
-                <li key={language} className={PILL}>
-                  {language}
-                </li>
-              ))}
-            </ul> */}
 
             <div className="mt-7.5 flex flex-wrap items-center justify-center gap-3.5 md:justify-start">
               <ButtonLink
@@ -167,9 +101,6 @@ export default async function DoctorDetailPage(
               >
                 Book with Dr. {doctor.name.split(" ")[1] ?? doctor.name}
               </ButtonLink>
-              {/* <ButtonLink href="/doctors" variant="secondary" block={false}>
-                All Doctors
-              </ButtonLink> */}
             </div>
           </Reveal>
         </div>
