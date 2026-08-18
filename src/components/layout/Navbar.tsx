@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { ButtonLink } from "@/components/ui/button";
+import { scrollToTop } from "@/lib/scroll";
 import { cn } from "@/lib/utils";
 import { navLinks, site } from "@/lib/site";
 
@@ -37,6 +38,23 @@ export default function Navbar() {
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+  /**
+   * On the home page the logo links to the page you are already on, which Next
+   * treats as a no-op — so a reader partway down the page gets nothing. Scroll
+   * instead. Modified and non-primary clicks are left alone so "open in new
+   * tab" still works.
+   */
+  const onLogoClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    close();
+
+    if (pathname !== "/") return;
+    if (event.button !== 0) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    event.preventDefault();
+    scrollToTop();
+  };
+
   return (
     <header
       ref={headerRef}
@@ -45,7 +63,7 @@ export default function Navbar() {
       <div className="container-page flex items-center justify-between gap-4 py-3.5 lg:py-4.5">
         <Link
           href="/"
-          onClick={close}
+          onClick={onLogoClick}
           className="flex min-w-0 items-center gap-3 text-ink"
           aria-label={`${site.name} — home`}
         >

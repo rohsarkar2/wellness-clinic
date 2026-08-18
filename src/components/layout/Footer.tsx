@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ScrollToTop } from "@/components/scroll-to-top";
 import { navLinks, site } from "@/lib/site";
 
 const HEADING = "mb-[18px] font-display font-semibold text-white";
@@ -36,10 +37,11 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="container-page mt-8.75 border-t border-white/15 pt-5 text-center md:mt-12.5">
+      <div className="container-page mt-8.75 flex flex-col items-center gap-4.5 border-t border-white/15 pt-5 text-center md:mt-12.5 md:flex-row md:justify-between md:gap-5 md:text-left">
         <p>
           &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
         </p>
+        <ScrollToTop />
       </div>
     </footer>
   );
