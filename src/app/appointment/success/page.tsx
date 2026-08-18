@@ -5,40 +5,17 @@ import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import { OG_IMAGES, pageMetadata } from "@/lib/metadata";
 import { site, telHref } from "@/lib/site";
-import { formatDate, formatTime } from "@/lib/utils/date";
 
-/** Noindex: the page only makes sense with the booking details in the query. */
+/** Noindex: this page only means anything straight after a submission. */
 export const metadata: Metadata = pageMetadata({
-  title: "Appointment Requested",
+  title: "Thank You",
   description: "Your appointment request has been received.",
   path: "/appointment/success",
   image: { ...OG_IMAGES.clinic, alt: site.name },
   noindex: true,
 });
 
-function first(value: string | string[] | undefined): string {
-  return Array.isArray(value) ? (value[0] ?? "") : (value ?? "");
-}
-
-export default async function AppointmentSuccessPage(
-  props: PageProps<"/appointment/success">,
-) {
-  const params = await props.searchParams;
-
-  const reference = first(params.ref);
-  const doctor = first(params.doctor);
-  const date = first(params.date);
-  const time = first(params.time);
-  const name = first(params.name);
-
-  const rows = [
-    reference && { term: "Reference", value: reference },
-    doctor && { term: "Doctor", value: doctor },
-    date && { term: "Date", value: formatDate(date) },
-    time && { term: "Time", value: formatTime(time) },
-    { term: "Status", value: "Awaiting confirmation" },
-  ].filter(Boolean) as Array<{ term: string; value: string }>;
-
+export default function AppointmentSuccessPage() {
   return (
     <Section>
       <Container>
@@ -48,33 +25,15 @@ export default async function AppointmentSuccessPage(
           </div>
 
           <h1 className="mb-3 font-display text-[1.6rem] font-bold text-ink sm:text-[2rem]">
-            Appointment Requested
+            Thank You!
           </h1>
-          <p>
-            {name ? `Thanks, ${name}. ` : "Thank you. "}
-            Your request has been received and our front desk will call you
-            shortly to confirm.
+          <p className="mx-auto max-w-110">
+            Your request has been received. Our team at {site.name} will contact
+            you shortly to confirm your appointment.
           </p>
 
-          {reference ? (
-            <dl className="my-7.5 overflow-hidden rounded-card border border-[#eef2f7] text-left">
-              {rows.map((row) => (
-                <div
-                  key={row.term}
-                  className="flex flex-col gap-0.5 border-b border-[#eef2f7] px-4 py-3 last:border-b-0 sm:flex-row sm:justify-between sm:gap-5 sm:px-5 sm:py-3.5"
-                >
-                  <dt className="text-[0.92rem] text-[#7a8794]">{row.term}</dt>
-                  <dd className="font-semibold text-ink sm:text-right">
-                    {row.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          ) : null}
-
-          <p>
-            Please arrive 10 minutes early and bring any previous prescriptions
-            or reports. To reschedule, call us on {site.phonePrimary}.
+          <p className="mt-4 text-[0.95rem] text-[#7a8794]">
+            Need us sooner? Call the clinic on {site.phonePrimary}.
           </p>
 
           <div className="mt-7.5 flex flex-wrap justify-center gap-3.5">

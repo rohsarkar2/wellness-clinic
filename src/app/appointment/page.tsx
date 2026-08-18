@@ -17,7 +17,7 @@ import type { Doctor } from "@/lib/types";
 export const metadata: Metadata = pageMetadata({
   title: "Book an Appointment",
   description:
-    "Book an appointment at Wellness Health Point — choose your doctor, pick an available time slot and we'll confirm by phone.",
+    "Book an appointment at Wellness Health Point — choose your doctor, send us your details and we'll confirm by phone.",
   path: "/appointment",
   image: { ...OG_IMAGES.clinic, alt: `Book a consultation at ${site.name}` },
 });
@@ -38,7 +38,7 @@ export default async function AppointmentPage() {
         <SectionTitle
           eyebrow="Appointments"
           title="Book Your Visit"
-          description={`Pick a doctor and a time that works for you. Clinic hours are ${site.hours.toLowerCase()}.`}
+          description={`Pick a doctor and send us your details — we'll call you back to confirm. Clinic hours are ${site.hours.toLowerCase()}.`}
         />
 
         {/* The form is the whole page, so it animates on mount. */}

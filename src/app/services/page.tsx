@@ -31,7 +31,7 @@ const PROCESS = [
   {
     icon: "fa-solid fa-calendar-plus",
     title: "Book",
-    description: "Choose a convenient appointment slot.",
+    description: "Send us your details and we'll call you back.",
   },
   {
     icon: "fa-solid fa-user-doctor",

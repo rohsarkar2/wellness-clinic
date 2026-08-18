@@ -101,12 +101,12 @@ export default function ContactPage() {
             <EnquiryForm
               wide
               title="Send an Enquiry"
-              subtitle="Fill in your details and we'll contact you shortly. To pick a specific time slot, use the booking page instead."
+              subtitle="Fill in your details and we'll contact you shortly. To ask for a specific doctor, use the booking page instead."
             />
           </Reveal>
 
           <Reveal className="text-center">
-            <ButtonLink href="/appointment">Book a Time Slot</ButtonLink>
+            <ButtonLink href="/appointment">Book an Appointment</ButtonLink>
           </Reveal>
         </Container>
       </Section>
