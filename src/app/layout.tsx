@@ -25,10 +25,6 @@ const poppins = Poppins({
   display: "swap",
 });
 
-/**
- * Site-wide defaults. Every page overrides the title, description, canonical
- * URL and social card via `pageMetadata`; what's left here is what's shared.
- */
 export const metadata: Metadata = {
   // Lets pages express canonical/OG URLs as plain paths like "/doctors".
   metadataBase: new URL(site.url),
@@ -90,16 +86,12 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // data-scroll-behavior opts back into Next 16's scroll override so route
-    // changes jump instantly while in-page anchors still scroll smoothly.
     <html
       lang="en"
       data-scroll-behavior="smooth"
       className={cn(inter.variable, poppins.variable, "font-sans")}
     >
       <head>
-        {/* Scroll reveals start hidden and are animated in by JS. Without it,
-            show them. */}
         <noscript>
           <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
         </noscript>

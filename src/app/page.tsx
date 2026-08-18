@@ -40,12 +40,12 @@ const HERO_FEATURES = [
   },
 ];
 
-const STATS = [
-  { value: "10,000+", label: "Happy Patients" },
-  { value: "25+", label: "Doctors" },
-  { value: "5+", label: "Departments" },
-  { value: "4.9", suffix: "/5", label: "Patient Rating", rating: 4.9 },
-];
+// const STATS = [
+//   { value: "10,000+", label: "Happy Patients" },
+//   { value: "25+", label: "Doctors" },
+//   { value: "5+", label: "Departments" },
+//   { value: "4.9", suffix: "/5", label: "Patient Rating", rating: 4.9 },
+// ];
 
 const WHY_US = [
   {
@@ -116,9 +116,6 @@ export default async function HomePage() {
               </ButtonLink>
             </div>
 
-            {/* On mount rather than on scroll — this sits above the fold. The
-                headline and CTAs above are left alone so the largest paint
-                isn't waiting on an animation. */}
             <RevealGroup className="grid gap-6 md:grid-cols-3" onMount>
               {HERO_FEATURES.map((feature) => (
                 <div
@@ -136,32 +133,10 @@ export default async function HomePage() {
             </RevealGroup>
           </div>
 
-          {/* `w-full` because the reveal wrapper, not the card, is now the
-              grid item HeroContent lays out. */}
           <Reveal className="w-full" delay={0.15} onMount>
             <EnquiryForm subtitle="Fill in your details and we'll contact you shortly." />
           </Reveal>
         </HeroContent>
-
-        {/* <Reveal>
-          <Container className="relative z-3 mt-10 grid gap-px overflow-hidden rounded-[22px] bg-[#edf2f7] shadow-card sm:grid-cols-2 lg:mt-12.5 xl:grid-cols-4">
-            {STATS.map((stat) => (
-              <div
-                key={stat.label}
-                className="bg-white px-3 py-5.5 text-center lg:p-7"
-              >
-                <h3 className="text-[2rem] text-primary">
-                  {stat.value}
-                  {stat.suffix ? (
-                    <span className="text-[0.6em]">{stat.suffix}</span>
-                  ) : null}
-                </h3>
-
-                <span className="text-[#666]">{stat.label}</span>
-              </div>
-            ))}
-          </Container>
-        </Reveal> */}
       </Hero>
 
       <Section>

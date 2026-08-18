@@ -16,13 +16,6 @@ function resolveSiteUrl(): string {
 /** Single source of truth for clinic details repeated across the site. */
 export const site = {
   name: "Wellness Health Point",
-  /**
-   * Canonical origin, used for canonical links, OG tags and the sitemap.
-   *
-   * Only ever read from server-side code (metadata, robots, sitemap), which is
-   * what lets the Vercel fallbacks work — those variables aren't exposed to the
-   * browser. Set NEXT_PUBLIC_SITE_URL to pin it explicitly.
-   */
   url: resolveSiteUrl(),
   tagline: "Care. Compassion. Excellence.",
   description:
