@@ -2,6 +2,12 @@ import type { Doctor } from "@/lib/types";
 
 /**
  * Seed data for the clinic's doctors, taken from the original static site.
+ *
+ * Each `description` is the doctor's About text, and it says only what that
+ * doctor's own poster in `public/images` says — headline, body line, feature
+ * pills, and the qualifications and availability where the poster prints them.
+ * Two of the posters are in Bengali; those are translated, not embellished.
+ * Nothing that is not on the poster belongs in it.
  * This is what the placeholder API routes serve until the Node.js backend
  * takes over (see NEXT_PUBLIC_API_URL in .env.example).
  */
@@ -16,10 +22,10 @@ export const doctors: Doctor[] = [
     image: "/images/dr.sayan.jpeg",
     department: "General Medicine",
     description:
-      "Dr. Sayan Bose is a consultant paediatrician with over a decade of experience caring for newborns, infants and adolescents. He focuses on growth monitoring, immunisation schedules, nutritional guidance and the early detection of developmental concerns, and is known for putting anxious parents at ease.",
+      "An experienced and caring paediatrician at Khardah Wellness Health Point, consulting for the good health and proper development of your child. Child-friendly care, complete growth monitoring and compassionate consultation. Available Monday, Thursday and Saturday, on appointment only.",
     languages: ["English", "Hindi", "Bengali"],
     availableDays: ["Monday", "Thursday", "Saturday"],
-    consultationFee: 600,
+    // consultationFee: 600,
   },
   {
     id: "sayantani-bhanja",
@@ -31,10 +37,10 @@ export const doctors: Doctor[] = [
     image: "/images/dr.sayantani.jpeg",
     department: "Gynecology",
     description:
-      "Dr. Sayantani Bhanja provides comprehensive women's healthcare across every life stage — from adolescent health and family planning to antenatal care, high-risk pregnancy management and menopause support. She believes in shared decision making and evidence-based, respectful care.",
+      "Trusted and compassionate gynaecological care — from routine check-ups to specialised advice. Expert gynaecological care, compassionate consultation and personalised women's healthcare. Available Tuesday, Wednesday, Friday and Saturday.",
     languages: ["English", "Hindi", "Bengali"],
     availableDays: ["Tuesday", "Wednesday", "Friday", "Saturday"],
-    consultationFee: 700,
+    // consultationFee: 700,
   },
   {
     id: "riya-das",
@@ -46,10 +52,10 @@ export const doctors: Doctor[] = [
     image: "/images/dr.riya.jpeg",
     department: "General Medicine",
     description:
-      "Dr. Riya Das treats the full range of ear, nose and throat conditions, including chronic sinusitis, hearing loss, tonsillitis, vertigo and voice disorders. She combines careful diagnostic work-ups with conservative management wherever surgery can be avoided.",
+      "An experienced specialist consulting regularly at Khardah Wellness Health Point, with modern solutions for ear, nose, throat and head-and-neck problems. MBBS (Hons), MSc, DNB. Available on weekdays, by appointment only.",
     languages: ["English", "Hindi", "Bengali"],
     availableDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    consultationFee: 600,
+    // consultationFee: 600,
   },
   {
     id: "manas-mukul-mondal",
@@ -61,10 +67,10 @@ export const doctors: Doctor[] = [
     image: "/images/dr-manas.jpeg",
     department: "Orthopedics",
     description:
-      "Dr. Manas Mukul Mondal is a senior general and laparoscopic surgeon with 18 years of operative experience. He specialises in minimally invasive procedures for hernia, gallbladder and appendix conditions, offering shorter hospital stays and faster recovery for his patients.",
+      "An experienced general and laparoscopic surgeon. MBBS, MS (General Surgery), DNB (Surgery); Fellowship in Minimal Access Surgery (FMAS); Fellow of the Association of Surgeons of India (FAIS). Registration no. 72493 (WBMC).",
     languages: ["English", "Hindi", "Bengali"],
     availableDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    consultationFee: 800,
+    // consultationFee: 800,
   },
   {
     id: "ayan-dey",
@@ -76,10 +82,10 @@ export const doctors: Doctor[] = [
     image: "/images/dr.ayan.jpeg",
     department: "General Medicine",
     description:
-      "Dr. Ayan Dey manages diabetes, hypertension, thyroid disorders and other long-term conditions. His approach pairs medication with practical, sustainable lifestyle changes, and he runs structured follow-up plans so patients can see their numbers improve over time.",
+      "Physician and diabetologist — from everyday physical complaints through to blood sugar control, expert advice for a healthy, worry-free life. Diabetes management, lifestyle disorder care and personalised treatment. Available Monday and Tuesday.",
     languages: ["English", "Hindi", "Bengali"],
     availableDays: ["Monday", "Tuesday"],
-    consultationFee: 650,
+    // consultationFee: 650,
   },
 ];
 

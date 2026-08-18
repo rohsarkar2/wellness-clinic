@@ -10,7 +10,7 @@ export interface Doctor {
   department: string;
   languages: string[];
   availableDays: string[];
-  consultationFee: number;
+  // consultationFee: number;
 }
 
 export interface Service {
