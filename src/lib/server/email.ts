@@ -1,6 +1,7 @@
 import { format, parseISO } from "date-fns";
 import nodemailer, { type Transporter } from "nodemailer";
 
+import { LOGO_CID, LOGO_FILENAME, LOGO_PNG } from "@/lib/server/logo";
 import { site } from "@/lib/site";
 import type { Appointment, Enquiry } from "@/lib/types";
 
@@ -67,6 +68,19 @@ interface Message {
 }
 
 /**
+ * The masthead logo. `cid` is what the `<img>` in `shell()` points at, and
+ * the inline disposition keeps it out of the client's attachment list.
+ * Exported so a preview can resolve the same reference without sending.
+ */
+export const LOGO_ATTACHMENT = {
+  filename: LOGO_FILENAME,
+  content: LOGO_PNG,
+  cid: LOGO_CID,
+  contentType: "image/png",
+  contentDisposition: "inline" as const,
+};
+
+/**
  * Resolves either way — the row is already committed by the time this runs, and
  * an unreachable mail server must not turn a saved submission into a failure.
  * `label` identifies the row in the logs when a send is skipped or fails.
@@ -90,6 +104,10 @@ async function sendToClinic(
       to: config.to,
       // Lets the clinic reply straight to the patient from the notification.
       replyTo,
+      // Resolves the `cid:` in the masthead. Embedded rather than linked
+      // because desktop clients block remote images by default, which would
+      // leave a gap where the logo should be until the reader allows them.
+      attachments: [LOGO_ATTACHMENT],
       ...message,
     });
     return true;
@@ -266,8 +284,15 @@ function shell({
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:${SHEET};border-radius:16px;overflow:hidden;">
 
   <tr><td style="background:${NAVY};padding:26px 28px 24px;font-family:${FONT};">
-    <p style="margin:0 0 6px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:${ON_NAVY_SOFT};">${escapeHtml(site.name)}</p>
-    <h1 style="margin:0;font-size:21px;line-height:1.3;font-weight:600;color:${ON_NAVY};">${escapeHtml(heading)}</h1>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td width="48" valign="top" style="width:48px;padding:1px 16px 0 0;">
+        <img src="cid:${LOGO_CID}" width="48" height="48" alt="" style="display:block;width:48px;height:48px;border:0;outline:none;text-decoration:none;">
+      </td>
+      <td valign="top">
+        <p style="margin:0 0 6px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:${ON_NAVY_SOFT};">${escapeHtml(site.name)}</p>
+        <h1 style="margin:0;font-size:21px;line-height:1.3;font-weight:600;color:${ON_NAVY};">${escapeHtml(heading)}</h1>
+      </td>
+    </tr></table>
   </td></tr>
 
   <tr><td style="background:${SHEET};padding:24px 28px 4px;">

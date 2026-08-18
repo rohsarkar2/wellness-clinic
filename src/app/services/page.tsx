@@ -87,12 +87,12 @@ export default async function ServicesPage() {
 
           <div className="relative flex w-full items-center justify-center">
             <Image
-              src="/images/services.png"
+              src="/clinic-images/services.jpeg"
               alt="Healthcare services at Wellness Health Point"
               width={620}
-              height={480}
+              height={620}
               priority
-              className="mx-auto h-auto max-w-full rounded-card lg:max-w-120"
+              className="mx-auto h-auto max-w-full rounded-card lg:max-w-110"
             />
           </div>
         </HeroContent>

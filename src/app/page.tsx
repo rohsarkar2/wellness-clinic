@@ -76,6 +76,20 @@ export default async function HomePage() {
   return (
     <>
       <Hero className="lg:min-h-212.5">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 -left-20 z-1 hidden items-center select-none lg:flex lg:left-40 lg:-top-30"
+        >
+          <Image
+            src="/images/logo-mark.png"
+            alt=""
+            width={830}
+            height={830}
+            priority
+            className="w-120 opacity-10 lg:w-152"
+          />
+        </div>
+
         <HeroContent>
           <div className="w-full lg:max-w-150">
             <span className="text-[0.78rem] font-bold tracking-[1px] text-pink uppercase sm:text-base">
@@ -122,17 +136,6 @@ export default async function HomePage() {
             </RevealGroup>
           </div>
 
-          {/* Decorative only — hidden on phones where it is just noise. */}
-          <Image
-            src="/images/heroimg.png"
-            alt=""
-            aria-hidden="true"
-            width={900}
-            height={1200}
-            priority
-            className="pointer-events-none absolute bottom-0 hidden h-[88%] w-auto -translate-x-1/2 object-contain opacity-[0.18] mask-[linear-gradient(to_left,transparent_0%,rgb(0_0_0/0.8)_18%,black_35%)] md:left-[52%] md:block lg:-right-10 lg:left-auto lg:h-[110%] lg:translate-x-0 lg:opacity-35 lg:mask-[linear-gradient(to_left,black_65%,rgb(0_0_0/0.6)_80%,transparent_100%)]"
-          />
-
           {/* `w-full` because the reveal wrapper, not the card, is now the
               grid item HeroContent lays out. */}
           <Reveal className="w-full" delay={0.15} onMount>
@@ -140,7 +143,7 @@ export default async function HomePage() {
           </Reveal>
         </HeroContent>
 
-        <Reveal>
+        {/* <Reveal>
           <Container className="relative z-3 mt-10 grid gap-px overflow-hidden rounded-[22px] bg-[#edf2f7] shadow-card sm:grid-cols-2 lg:mt-12.5 xl:grid-cols-4">
             {STATS.map((stat) => (
               <div
@@ -158,7 +161,7 @@ export default async function HomePage() {
               </div>
             ))}
           </Container>
-        </Reveal>
+        </Reveal> */}
       </Hero>
 
       <Section>

@@ -27,7 +27,7 @@ export default function Hero({
 /** Two columns from `lg` up, stacked and centred below. */
 export function HeroContent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="container-page relative z-2 grid items-center justify-items-center gap-11 text-center lg:grid-cols-[1.1fr_0.9fr] lg:justify-items-stretch lg:gap-12.5 lg:text-left">
+    <div className="container-page relative z-2 grid items-start justify-items-center gap-11 text-center lg:grid-cols-[1.1fr_0.9fr] lg:justify-items-stretch lg:gap-12.5 lg:text-left">
       {children}
     </div>
   );

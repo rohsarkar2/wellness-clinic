@@ -20,16 +20,16 @@ export default function FormCard({
   return (
     <div
       className={cn(
-        "relative z-[5] rounded-[16px] bg-white/95 p-5.5 shadow-panel backdrop-blur-[15px] sm:rounded-[22px] sm:p-9",
+        "relative z-5 rounded-[16px] bg-white/95 p-5.5 shadow-panel backdrop-blur-[15px] sm:rounded-[22px] sm:p-9",
         wide && "mx-auto max-w-187.5 border border-primary/10",
         className,
       )}
     >
-      <div className="mx-auto mb-5 flex size-17.5 items-center justify-center rounded-full bg-mist text-[2rem] text-primary">
+      {/* <div className="mx-auto mb-5 flex size-17.5 items-center justify-center rounded-full bg-mist text-[2rem] text-primary">
         <i className={icon} aria-hidden="true" />
-      </div>
+      </div> */}
 
-      <h2 className="mb-2.5 text-center font-display text-[1.6rem] font-bold text-ink sm:text-[2rem]">
+      <h2 className=" text-center font-display text-[1.6rem] font-bold text-ink sm:text-[2rem]">
         {title}
       </h2>
       <p className="mb-7 text-center">{subtitle}</p>

@@ -63,12 +63,12 @@ export default function ContactPage() {
 
           <div className="relative flex w-full items-center justify-center">
             <Image
-              src="/images/clinic.png"
-              alt="Wellness Health Point reception"
-              width={620}
-              height={480}
+              src="/clinic-images/1.jpeg"
+              alt={`${site.name} signage — ${site.address}, ${site.phonePrimary}`}
+              width={800}
+              height={200}
               priority
-              className="mx-auto h-auto max-w-full rounded-card lg:max-w-120"
+              className="mx-auto h-auto max-w-full rounded-card shadow-card"
             />
           </div>
         </HeroContent>

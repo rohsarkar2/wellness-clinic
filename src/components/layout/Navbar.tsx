@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -49,9 +49,16 @@ export default function Navbar() {
           className="flex min-w-0 items-center gap-3 text-ink"
           aria-label={`${site.name} — home`}
         >
-          <i
+          {/* <i
             className="fa-solid fa-heart-pulse text-[1.7rem] text-primary sm:text-[2rem]"
             aria-hidden="true"
+          /> */}
+          <Image
+            src="/images/logo-mark.png"
+            alt={`${site.name} logo`}
+            width={38}
+            height={38}
+            className="h-10 w-10 sm:h-11 sm:w-11"
           />
           <div className="min-w-0">
             <h2 className="font-display text-[1.1rem] leading-tight font-bold sm:text-[1.4rem]">
