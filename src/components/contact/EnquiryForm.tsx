@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import FormCard, {
   FormRow,
@@ -14,6 +14,13 @@ import { toErrorMessage } from "@/lib/api/client";
 import { departments } from "@/lib/data/services";
 import type { ContactPayload } from "@/lib/types";
 import { hasErrors, validateContact, type Errors } from "@/lib/validation";
+
+/**
+ * How long a submit result stays on screen. The card sits above the fold on
+ * the landing page, so a result left up indefinitely reads as the state of a
+ * fresh form rather than the outcome of the last one.
+ */
+const STATUS_TIMEOUT_MS = 4000;
 
 const EMPTY: ContactPayload = {
   name: "",
@@ -46,6 +53,15 @@ export default function EnquiryForm({
     type: "success" | "error";
     message: string;
   }>();
+
+  // Keyed on the status object, which is replaced on every submit, so a second
+  // attempt restarts the countdown instead of inheriting the first one's.
+  useEffect(() => {
+    if (!status) return;
+
+    const timer = setTimeout(() => setStatus(undefined), STATUS_TIMEOUT_MS);
+    return () => clearTimeout(timer);
+  }, [status]);
 
   function setField<K extends keyof ContactPayload>(
     key: K,

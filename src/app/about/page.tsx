@@ -17,7 +17,10 @@ export const metadata: Metadata = pageMetadata({
   description:
     "Wellness Health Point is dedicated to trusted healthcare through experienced doctors, modern technology and compassionate patient care.",
   path: "/about",
-  image: { ...OG_IMAGES.about, alt: `Inside ${site.name}` },
+  image: {
+    ...OG_IMAGES.about,
+    alt: `${site.name} — multi-speciality doctors clinic`,
+  },
 });
 
 const HIGHLIGHTS = [
@@ -88,10 +91,10 @@ export default function AboutPage() {
 
           <div className="relative flex w-full items-center justify-center">
             <Image
-              src="/images/abouts.png"
-              alt="Inside the Wellness Health Point clinic"
+              src="/clinic-images/4.jpeg"
+              alt={`${site.name} — multi-speciality doctors clinic`}
               width={620}
-              height={480}
+              height={620}
               priority
               className="mx-auto h-auto max-w-full rounded-card lg:max-w-120"
             />
